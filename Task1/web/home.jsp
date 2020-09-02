@@ -13,30 +13,29 @@
 </head>
 <body>
 <h1>Main Page</h1>
-    <form action="/get" method="POST">
-        <input type="text" name="get_id">
+    <form action="/get" method="GET">
+        <input type="text"  name="id" placeholder="Search by Id) ">
         <button>Search</button>
-        <a href="/add" type="button">Add</a>
+        <a href="/add" type="button"><strong>Add</strong></a>
     </form>
     <% ArrayList<Footballer> footballers = (ArrayList<Footballer>)request.getAttribute("footballlers");
     if(footballers!=null){
         %>
         <h1>Total:  <%=footballers.size()%>  </h1>
         <%
-            int index = 0;
+            int index = footballers.size();
             for(Footballer f: footballers){
-                index++;
         %>
 
 
-
-        <h2 style='color:darkred; border:1px solid grey; border-radius:3px;'><strong><%=index%>)<%=f.getName()%>   <%=f.getSurname()%> </strong></h2>
-        <h4> Club: <%=f.getClub()%>  </h4>
-        <h4> Salary:  <%=f.getSalary()%> M$</h4>
-        <h4> Transfer Price:  <%=f.getTransferPrice()%>  M$</h4>
-
+        <h2 style='color:#46A478; border:2px solid grey; border-radius:3px;'><strong><%=index%>)<%=f.getName()%>   <%=f.getSurname()%> </strong></h2>
+        <h4> Club:<big style="color: darkblue;"> <%=f.getClub()%>  </big></h4>
+        <h4> Salary:  <big style="color: darkblue;"> <strong> <%=f.getSalary()%> </strong> </big> M$</h4>
+        <h4> Transfer Price: <big style="color: darkblue;"> <strong> <%=f.getTransferPrice()%> </strong> </big>M$</h4>
+        <a href="/get?id=<%=index%>"><button>Перейти</button></a>
             <%
-                    }
+                        index--;
+            }
         }
     %>
 </body>

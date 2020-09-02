@@ -15,31 +15,19 @@ import java.util.ArrayList;
 @WebServlet(value = "/get")
 public class GetServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("We are in get 1");
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            System.out.println("We are in get");
+            System.out.println("We are in get 2");
 
-            int id = Integer.parseInt(request.getParameter("get_id"));
-            ArrayList<Footballer> footballers = DBManager.getFootballers();
+            int id = Integer.parseInt(request.getParameter("id"));
+            Footballer footballer = DBManager.getFootballer(id-1);
+            request.setAttribute("footballler", footballer);
+            request.setAttribute("this_id", id);
+            request.getRequestDispatcher("/get.jsp").forward(request, response);
 
-            /*
-            * Так как нарушается совпадение Arraylist id и Footballer class id при удалении
-            * */
-            boolean notExist = true;
-            for(int i = 0; i < footballers.size(); i++){
-                if(id  == footballers.get(i).getId()){
-                    Footballer footballer = DBManager.getFootballer(i);
-                    request.setAttribute("footballler", footballer);
-                    request.getRequestDispatcher("/get.jsp").forward(request, response);
-                    notExist = false;
-                    break;
-                }
-            }
-
-            if(notExist){
-                response.setContentType("text/html");
-                PrintWriter out = response.getWriter();
-                out.print("<h1> Please write Exist ID </h1>");
-            }
 
         }
         catch (Exception e){
@@ -48,9 +36,5 @@ public class GetServlet extends HttpServlet {
             out.print("<h1> Please write Exist ID </h1>");
 
         }
-    }
-
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 }

@@ -17,18 +17,8 @@ public class DeleteServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             System.out.println("We are in delete");
-
             int id = Integer.parseInt(request.getParameter("delete_id"));
-            ArrayList<Footballer> footballers = DBManager.getFootballers();
-
-            /*
-             * Так как нарушается совпадение Arraylist id и Footballer class id при удалении
-             * */
-            for(int i = 0; i < footballers.size(); i++){
-                if(id == footballers.get(i).getId()){
-                    DBManager.deleteFootBaller(i);
-                }
-            }
+            DBManager.deleteFootBaller(id-1);
 
             response.sendRedirect("/");
         }

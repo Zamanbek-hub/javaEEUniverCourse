@@ -12,18 +12,20 @@
 </head>
 <body>
 <h1>Hello</h1>
-<% Footballer f = (Footballer) request.getAttribute("footballler");
+<%
+    Footballer f = (Footballer) request.getAttribute("footballler");
+    int this_id = (int) request.getAttribute("this_id");
     if(f!=null){
 %>
 
 
 
-<h2 style='color:darkred; border:1px solid grey; border-radius:3px;'><strong><%=f.getId()%>)<%=f.getName()%>   <%=f.getSurname()%> </strong></h2>
-<h4> Club: <%=f.getClub()%>  </h4>
-<h4> Salary:  <%=f.getSalary()%> M$</h4>
-<h4> Transfer Price:  <%=f.getTransferPrice()%>  M$</h4>
+<h2 style='color:#46A478; border:2px solid grey; border-radius:3px;'><strong><%=this_id%>)<%=f.getName()%>   <%=f.getSurname()%> </strong></h2>
+<h4> Club: <big style="color: darkblue;"> <%=f.getClub()%>  </big> </h4>
+<h4> Salary: <big style="color: darkblue;"> <strong> <%=f.getSalary()%> </strong> </big> M$</h4>
+<h4> Transfer Price:  <big style="color: darkblue;"> <strong> <%=f.getTransferPrice()%> </strong> </big>M$</h4>
 <form action="/delete" method="POST">
-    <input type='hidden' name="delete_id" value='<%=f.getId()%>'>
+    <input type='hidden' name="delete_id" value='<%=this_id%>'>
     <button>Delete</button>
 </form>
 <%
