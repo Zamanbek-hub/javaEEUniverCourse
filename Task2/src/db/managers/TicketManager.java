@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class TicketManager {
     private static ArrayList<Ticket> tickets = new ArrayList<>();
-    private static Long id = 4L;
+    private static Long id = 10L;
 
     static {
         tickets.add(new Ticket(1L, "Aktobe", "Almaty", 30000, 27));
@@ -39,7 +39,7 @@ public class TicketManager {
                 return ticket;
             }
         }
-        return new Ticket();
+        return new Ticket(); // null cannot be returned
     }
 
     //this method returns a list of all tickets
@@ -50,19 +50,18 @@ public class TicketManager {
     //this method returns a list of tickets from index with size
     public static ArrayList<Ticket> getTicketsFromRange(int page) {
         page = page - 1;
+        // convert to fromIndex and toIndex to measure with id
         int fromIndex = page * 3;
         int toIndex = fromIndex + 3;
         if(toIndex > tickets.size())
             toIndex = tickets.size();
 
+
+        // so that new tickets are first on the list
         ArrayList<Ticket> reverseList = new ArrayList<>();
         for(int i = tickets.size()-1; i >= 0 ; i--){
             reverseList.add(tickets.get(i));
         }
-
-        System.out.println(reverseList);
-
-//        ArrayList<Ticket> tickets2 = new ArrayList<Ticket>(tickets.subList(fromIndex,toIndex));
 
         return new ArrayList<Ticket>(reverseList.subList(fromIndex,toIndex));
     }

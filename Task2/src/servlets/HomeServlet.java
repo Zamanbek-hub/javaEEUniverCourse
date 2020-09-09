@@ -18,26 +18,25 @@ public class HomeServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("Hello World");
         ArrayList<Ticket> tickets = null;
-//        ArrayList<Ticket> reverseTickets = new ArrayList<Ticket>();
 
+        // get pages count
         int pages = TicketManager.getAllTickets().size() / 3;
 
+        // if the remainder > 0 then + 1 page
         if ((TicketManager.getAllTickets().size() - (3 * pages)) % 3 > 0) {
             pages += 1;
         }
-        System.out.println("pages ="+pages);
+
 
         try{
-            System.out.println("Yeap");
             int page = Integer.parseInt(request.getParameter("page"));
             tickets = TicketManager.getTicketsFromRange(page);
             request.setAttribute("tickets", tickets);
             request.setAttribute("active_page", page);
         }
         catch (Exception e){
-            System.out.println("Noop");
+            // Default pages = 1
             tickets = TicketManager.getTicketsFromRange(1);
             request.setAttribute("tickets", tickets);
             request.setAttribute("active_page", 1);

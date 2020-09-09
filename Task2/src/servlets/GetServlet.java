@@ -22,10 +22,10 @@ public class GetServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            System.out.println("we are here 1");
+
             Long id = Long.parseLong(request.getParameter("id"));
             Ticket ticket = TicketManager.getTicket(id);
-            System.out.println("we are here 2");
+
             request.setAttribute("ticket", ticket);
             request.getRequestDispatcher("/views/get.jsp").forward(request, response);
         }

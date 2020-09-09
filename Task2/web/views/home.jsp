@@ -45,6 +45,7 @@
                 int pages = (int)request.getAttribute("pages");
                 int active_page = (int)request.getAttribute("active_page");
 
+                // to page won't be < 1
                 if(active_page > 1){
                 %>
             <li class="page-item"><a class="page-link" href="/home?page=<%=active_page-1%>">Previous</a></li>
@@ -62,6 +63,7 @@
             <%
                     }
                 }
+                // to page won't be > pages
                 if(active_page < pages){
             %>
 
