@@ -19,17 +19,17 @@ public class HomeServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         System.out.println("Hello World");
-        ArrayList<Footballer>  oldFootballers = DBManager.getFootballers();
-        ArrayList<Footballer> newFootballers = new ArrayList<Footballer>();
+        ArrayList<Footballer>  Footballers = DBManager.getFootballers();
+        ArrayList<Footballer> reverseFootballers = new ArrayList<Footballer>();
 
         /*
         * Чтобы новые добавленные обекты выходили сверху
         * */
-        for (int i = oldFootballers.size() - 1; i >= 0; i--) {
-            newFootballers.add(oldFootballers.get(i));
+        for (int i = Footballers.size() - 1; i >= 0; i--) {
+            reverseFootballers.add(Footballers.get(i));
         }
 
-        request.setAttribute("footballlers", newFootballers);
+        request.setAttribute("footballlers", reverseFootballers);
         request.getRequestDispatcher("/home.jsp").forward(request, response);
     }
 }

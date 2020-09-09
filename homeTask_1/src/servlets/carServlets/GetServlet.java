@@ -65,7 +65,7 @@ public class GetServlet extends HttpServlet {
             request.setAttribute("cars", carsWithIndex);
             request.setAttribute("attr", attr);
             request.setAttribute("search", search);
-            request.getRequestDispatcher("/get.jsp").forward(request, response);
+            request.getRequestDispatcher("/views/get.jsp").forward(request, response);
 
 
         }

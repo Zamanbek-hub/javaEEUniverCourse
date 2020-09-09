@@ -32,7 +32,7 @@
         <h4> Club:<big style="color: darkblue;"> <%=f.getClub()%>  </big></h4>
         <h4> Salary:  <big style="color: darkblue;"> <strong> <%=f.getSalary()%> </strong> </big> M$</h4>
         <h4> Transfer Price: <big style="color: darkblue;"> <strong> <%=f.getTransferPrice()%> </strong> </big>M$</h4>
-        <a href="/get?id=<%=index%>"><button>Перейти</button></a>
+        <a href="${pageContext.request.contextPath}/get?id=<%=index%>"><button>Перейти</button></a>
             <%
                         index--;
             }

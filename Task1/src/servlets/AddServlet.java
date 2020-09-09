@@ -33,7 +33,6 @@ public class AddServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ArrayList<Footballer> footballers = DBManager.getFootballers();
         request.getRequestDispatcher("/add.jsp").forward(request, response);
     }
 }

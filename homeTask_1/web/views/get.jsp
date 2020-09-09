@@ -31,7 +31,7 @@
 <h4> Price:<big style="color: darkblue;"> <%=car.getPrice()%> </big> KZT</h4>
 <h4> Year:  <big style="color: darkblue;"> <strong> <%=car.getYear()%> </strong> </big> </h4>
 <form action="/delete" method="POST">
-    <input type="hidden" name="attr" value="<%=currentAttr%>">
+        <input type="hidden" name="attr" value="<%=currentAttr%>">
     <input type="hidden" name="search" value="<%=currentSearch%>">
     <input type="hidden" name="delete_id" value="<%=entry.getKey()%>">
     <button>Delete</button>

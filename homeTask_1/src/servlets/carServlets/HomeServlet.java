@@ -30,6 +30,6 @@ public class HomeServlet extends HttpServlet {
         }
 
         request.setAttribute("footballlers", reverseCars);
-        request.getRequestDispatcher("/home.jsp").forward(request, response);
+        request.getRequestDispatcher("/views/home.jsp").forward(request, response);
     }
 }
