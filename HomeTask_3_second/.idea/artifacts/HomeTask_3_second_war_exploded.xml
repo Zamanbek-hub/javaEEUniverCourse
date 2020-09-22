@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="HomeTask_3_second:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/HomeTask_3_second_war_exploded</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="HomeTask_3_second" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="HomeTask_3_second/web/Web" />
+    </root>
+  </artifact>
+</component>

@@ -16,10 +16,10 @@
 <form action="/get" method="GET">
     Search by <select name="attr" id="attribute" style="width:100px;">
         <option value="none2" selected>id)</option>
-        <option value="name">name</option>
-        <option value="model">model</option>
-        <option value="year">year</option>
-        <option value="price">price</option>
+        <option >name</option>
+        <option >model</option>
+        <option >year</option>
+        <option >price</option>
     </select>
     <input type="text" name="search" placeholder="Type ">
     <button>Search</button>
@@ -45,17 +45,6 @@
     }
 %>
 
-<% int pages = (int)request.getAttribute("pages");
-    for(int i = 0; i<pages; i++){
-%>
-<nav aria-label="Page navigation example">
-    <ul class="pagination">
-        <li class="page-item"><a class="page-link" href="/&page=<%=page%>">i</a></li>
-    </ul>
-</nav>
-<%
 
-    }
-%>
 </body>
 </html>
