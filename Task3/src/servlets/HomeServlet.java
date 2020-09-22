@@ -61,6 +61,8 @@ public class HomeServlet extends HttpServlet {
         String iin = request.getParameter("iin");
         boolean is_grant = Boolean.parseBoolean(request.getParameter("is_grant"));
 
+        System.out.println("IS_grant = " + is_grant);
+
         String currentURL = currentURL(name,surname,iin,is_grant);
         ArrayList<Student> students = null;
         int count = 10; // count of objects for One page of Pagination

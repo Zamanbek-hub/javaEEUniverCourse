@@ -15,7 +15,7 @@
 <body>
 <%@include file="./../templates/navbar.jsp" %>
 <div class="container">
-    <br>
+    <%@include file="./../templates/messages.jsp" %>
     <br>
 
     <%
@@ -81,6 +81,9 @@
                 <form method="POST" action="/add_league">
                     <div class="modal-header">
                         <h5 class="modal-title" id="addLeagueModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
@@ -107,6 +110,9 @@
                 <form method="POST" action="/home" id="update_form">
                     <div class="modal-header">
                         <h5 class="modal-title" id="updateLeagueModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </div>
                     <div class="modal-body">
                         <input type="hidden" id="update_id" name="update_id">

@@ -16,7 +16,7 @@
 <body>
 <%@include file="./../templates/navbar.jsp" %>
 <div class="container">
-    <br>
+    <%@include file="./../templates/messages.jsp" %>
     <br>
 
     <%
@@ -39,7 +39,7 @@
     <div class="card" style="background-color: white">
 
         <div class="card-header">
-            <span style="font-weight: bolder">List of all Leagues</span>
+            <span style="font-weight: bolder">List of all Cities</span>
             <button class="btn btn-dark" data-toggle="modal" data-target="#addLeagueModal" style="float: right;">+Add new</button>
         </div>
 
@@ -58,7 +58,7 @@
                 <tr>
                     <td><%=city.getName()%></td>
                     <td class="text-right">
-                        <button class="btn btn-success" onclick="fillToUpdateLeagueModal(<%=city.getId()%>,'<%=city.getName()%>',<%=city.getLeague().getId()%>)" data-toggle="modal" data-target="#updateLeagueModal">Edit</button>
+                        <button class="btn btn-success" onclick="fillToUpdateLeagueModal(<%=city.getId()%>,'<%=city.getName()%>')" data-toggle="modal" data-target="#updateLeagueModal">Edit</button>
                         <a href="${pageContext.request.contextPath}/get_clubs?city_id=<%=city.getId()%>" >
                             <button class="btn btn-dark" >Details</button>
                         </a>
@@ -79,7 +79,7 @@
     <div class="modal fade" id="addLeagueModal" tabindex="-1" role="dialog" aria-labelledby="addLeagueModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form method="POST" action="/home">
+                <form method="POST" action="/add_city">
                     <div class="modal-header">
                         <h5 class="modal-title" id="addLeagueModalLabel">Modal title</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -118,11 +118,11 @@
                             <label for="update_name">Name:</label>
                             <input type="text" class="form-control" id="update_name" name="update_name" placeholder="Name of city...">
                         </div>
-                        <input type="hidden" class="league_id" name="league_id">
+                        <input type="hidden"  class="league_id" name="league_id">
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-dark"  onclick="changeAction('/update_club')">SAVE</button>
-                        <button type="submit" class="btn btn-danger" onclick="changeAction('/delete_club')">DELETE</button>
+                        <button type="submit" class="btn btn-dark"  onclick="changeAction('/update_city')">SAVE</button>
+                        <button type="submit" class="btn btn-danger" onclick="changeAction('/delete_city')">DELETE</button>
                     </div>
                 </form>
             </div>
@@ -134,14 +134,25 @@
 </div>
 
 <script type="text/javascript">
-    const fillToUpdateLeagueModal = (id, name, league_id) =>{
+    const fillToUpdateLeagueModal = (id, name) =>{
         document.getElementById("update_id").value = id;
         document.getElementById("update_name").value = name;
+    }
 
+    const setLeagueID = (league_id) => {
         Array.from(document.getElementsByClassName("league_id")).forEach((input) => {
             input.value = league_id;
         });
     }
+
+    <%
+
+        League league = (League) request.getAttribute("league");
+
+    %>
+        setLeagueID('<%=league.getId()%>');
+    <%
+    %>
 
     const changeAction = (url) =>{
         document.getElementById("update_form").action = url;

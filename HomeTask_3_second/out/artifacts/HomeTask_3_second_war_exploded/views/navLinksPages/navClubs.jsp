@@ -1,5 +1,6 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="db.classes.Club" %>
+<%@ page import="db.classes.City" %>
 <%--
   Created by IntelliJ IDEA.
   User: Zamanbek
@@ -16,7 +17,7 @@
 <body>
 <%@include file="./../templates/navbar.jsp" %>
 <div class="container">
-    <br>
+    <%@include file="./../templates/messages.jsp" %>
     <br>
 
     <%
@@ -39,7 +40,7 @@
     <div class="card" style="background-color: white">
 
         <div class="card-header">
-            <span style="font-weight: bolder">List of all Leagues</span>
+            <span style="font-weight: bolder">List of all Clubs</span>
             <button class="btn btn-dark" data-toggle="modal" data-target="#addLeagueModal" style="float: right;">+Add new</button>
         </div>
 
@@ -58,7 +59,7 @@
                 <tr>
                     <td><%=club.getName()%></td>
                     <td class="text-right">
-                        <button class="btn btn-success" onclick="fillToUpdateLeagueModal(<%=club.getId()%>,'<%=club.getName()%>', '<%=club.getDescription()%>', <%=club.getFoundedYear()%>, <%=club.getCity().getId()%>)" data-toggle="modal" data-target="#updateLeagueModal">Edit</button>
+                        <button class="btn btn-success" onclick="fillToUpdateLeagueModal(<%=club.getId()%>,'<%=club.getName()%>', '<%=club.getDescription()%>', <%=club.getFoundedYear()%>)" data-toggle="modal" data-target="#updateLeagueModal">Edit</button>
                         <a href="${pageContext.request.contextPath}/get_club?club_id=<%=club.getId()%>" >
                             <button class="btn btn-dark" >Details</button>
                         </a>
@@ -79,7 +80,7 @@
     <div class="modal fade" id="addLeagueModal" tabindex="-1" role="dialog" aria-labelledby="addLeagueModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form method="POST" action="/home">
+                <form method="POST" action="/add_club">
                     <div class="modal-header">
                         <h5 class="modal-title" id="addLeagueModalLabel">Modal title</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -137,8 +138,8 @@
                         <input type="hidden" class="city_id" name="city_id">
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-dark"  onclick="changeAction('/updateLeague')">SAVE</button>
-                        <button type="submit" class="btn btn-danger" onclick="changeAction('/deleteLeague')">DELETE</button>
+                        <button type="submit" class="btn btn-dark"  onclick="changeAction('/update_club')">SAVE</button>
+                        <button type="submit" class="btn btn-danger" onclick="changeAction('/delete_club')">DELETE</button>
                     </div>
                 </form>
             </div>
@@ -150,21 +151,34 @@
 </div>
 
 <script type="text/javascript">
-    const fillToUpdateLeagueModal = (id, name, description,year, city_id) =>{
+    const fillToUpdateLeagueModal = (id, name, description,year) =>{
         document.getElementById("update_id").value = id;
         document.getElementById("update_name").value = name;
         document.getElementById("update_description").value = description;
         document.getElementById("update_founded_year").value = year;
 
+    }
+
+    const setCityID = (city_id) => {
         Array.from(document.getElementsByClassName("city_id")).forEach((input) => {
             input.value = city_id;
         });
-
     }
+
+    <%
+
+        City city = (City) request.getAttribute("city");
+
+    %>
+    setCityID('<%=city.getId()%>');
+    <%
+    %>
 
     const changeAction = (url) =>{
         document.getElementById("update_form").action = url;
     }
 </script>
+
+
 </body>
 </html>

@@ -25,6 +25,8 @@ public class EditServlet extends HttpServlet {
             boolean is_grant = Boolean.parseBoolean(request.getParameter("is_grant"));
             String specialty = request.getParameter("specialty");
 
+            System.out.println("is_grant_in_edit = " + is_grant);
+
             DBManager.editStudent(new Student(id, name, surname, middle_name, birthdate, iin, is_grant, specialty));
 
             request.setAttribute("success", true);

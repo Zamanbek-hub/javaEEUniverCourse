@@ -10,32 +10,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.rmi.server.ExportException;
 
 @WebServlet(value = "/add_league")
 public class AddLeagueServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-//            Long id = Long.parseLong(request.getParameter(""));
             String name = request.getParameter("add_name");
             String description = request.getParameter("add_description");
 
-            DBManager.addLeague(new League(name, description));
-
-            request.setAttribute("success", true);
-            request.setAttribute("type", "success");
-            request.setAttribute("message", "Student was added successfully");
-            String path = "<span style='color:blue; font-weight: bold;'><a href='/'>Home Page</a> / </span> Leagues";
-            request.setAttribute("path", path);
-            request.setAttribute("leagues", DBManager.getLeagues());
-            request.getRequestDispatcher("/views/navLinksPages/navLeagues.jsp").forward(request, response);
+            if(DBManager.addLeague(new League(name, description))) {
+                response.sendRedirect("/leagues?success=true&type=1");
+            }else{
+                throw new Exception();
+            }
 
         } catch (Exception e){
-            request.setAttribute("success", false);
-            request.setAttribute("type", "danger");
-            request.setAttribute("message", "Student wasn't added, something wrong <br>Try again");
+            response.sendRedirect("/leagues?success=false&type=0");
         }
-
-        request.getRequestDispatcher("/views/add.jsp").forward(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

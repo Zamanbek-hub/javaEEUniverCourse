@@ -21,21 +21,43 @@ public class GetCitiesServlet extends HttpServlet {
         try {
             Long id = Long.parseLong(request.getParameter("league_id"));
             League league = DBManager.getLeague(id);
+            System.out.println("league_id = "+league);
 
             if (league != null) {
                 String path = "<span style='color:blue; font-weight: bold;'><a href='/'>Home Page</a> / <a href='/leagues'>Leagues</a> / </span>" + league.getName();
+                request.setAttribute("league", league);
                 request.setAttribute("cities", DBManager.getCitiesByLeague(league.getId()));
                 request.setAttribute("path", path);
-                request.getRequestDispatcher("/views/navLinksPages/navCities.jsp").forward(request, response);
+
+                if (request.getParameter("success") != null) {
+                    boolean success = Boolean.parseBoolean(request.getParameter("success"));
+                    String message = "";
+
+                    if (success) {
+                        int messageType = Integer.parseInt(request.getParameter("type"));
+
+                        if (messageType == 1)
+                            message = "new City was successfully added";
+                        else if (messageType == 2)
+                            message = "City was successfully updates";
+                        else if (messageType == 3)
+                            message = "City was successfully deleted";
+                        else
+                            throw new Exception();
+                    }
+
+                    request.setAttribute("success", success);
+                    request.setAttribute("message", message);
+
+                }
             } else {
                 throw new Exception();
             }
         }
         catch (Exception e){
-            response.setContentType("text/html");
-            PrintWriter out = response.getWriter();
-            out.print("<h1> No this Clubs</h1>");
-
+            e.printStackTrace();
         }
+
+        request.getRequestDispatcher("/views/navLinksPages/navCities.jsp").forward(request, response);
     }
 }

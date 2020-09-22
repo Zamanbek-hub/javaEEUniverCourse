@@ -11,10 +11,10 @@
                 <a class="nav-link" href="/leagues" >Leagues</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/" >Cities</a>
+                <a class="nav-link" href="/leagues" >Cities</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/" >Clubs</a>
+                <a class="nav-link" href="/leagues" >Clubs</a>
             </li>
 
         </ul>

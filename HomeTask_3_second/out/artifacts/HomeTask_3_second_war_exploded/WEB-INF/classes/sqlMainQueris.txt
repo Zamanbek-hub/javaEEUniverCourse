@@ -1,0 +1,30 @@
+delete from clubs where club_id > 0;
+delete from cities where city_id > 0;
+delete from leagues where league_id > 0;
+
+select * from leagues;
+select * from cities;
+select * from clubs;
+
+
+
+CREATE TABLE leagues (
+      league_id serial PRIMARY KEY,
+      name varchar(255) NOT NULL  UNIQUE,
+      description text NOT NULL
+);
+
+
+CREATE TABLE cities (
+     city_id serial PRIMARY KEY,
+     name varchar(255) NOT NULL  UNIQUE,
+     league_id int REFERENCES leagues(league_id) ON UPDATE CASCADE
+);
+
+CREATE TABLE clubs (
+    club_id serial PRIMARY KEY,
+    name varchar(255) NOT NULL UNIQUE,
+    description text NOT NULL,
+    founded_year int NOT NULL,
+    city_id int REFERENCES cities(city_id) ON UPDATE CASCADE ON DELETE CASCADE
+);

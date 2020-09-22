@@ -47,11 +47,11 @@
             <label for="is_grant">Is Grant:</label>
             <select class="form-control" id="is_grant" name="is_grant">
                 <% if (student.isGrant()) {%>
-                <option selected>yes</option>
-                <option>no</option>
+                <option selected value="True">yes</option>
+                <option value="False">no</option>
                 <% }else {%>
-                <option selected>no</option>
-                <option>yes</option>
+                <option selected value="False">no</option>
+                <option value="True">yes</option>
                 <% }%>
             </select>
         </div>

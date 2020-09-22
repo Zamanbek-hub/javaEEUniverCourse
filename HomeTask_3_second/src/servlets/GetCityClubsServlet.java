@@ -22,22 +22,44 @@ public class GetCityClubsServlet extends HttpServlet {
         try {
             Long id = Long.parseLong(request.getParameter("city_id"));
             City city = DBManager.getCity(id);
-
+            System.out.println("city_id = " + city);
             if (city != null) {
                 String path = "<span style='color:blue; font-weight: bold;'><a href='/'>Home Page</a> / <a href='/leagues'>Leagues</a> / " +
                         "<a href='/get_cities?league_id="+ city.getLeague().getId()+"'>" + city.getLeague().getName()+ "</a> / </span>" + city.getName();
+                request.setAttribute("city", city);
                 request.setAttribute("clubs", DBManager.getClubsByCity(city.getId()));
                 request.setAttribute("path", path);
-                request.getRequestDispatcher("/views/navLinksPages/navClubs.jsp").forward(request, response);
+
+                if (request.getParameter("success") != null) {
+                    boolean success = Boolean.parseBoolean(request.getParameter("success"));
+                    String message = "";
+
+                    if (success) {
+                        int messageType = Integer.parseInt(request.getParameter("type"));
+
+                        if (messageType == 1)
+                            message = "new Club was successfully added";
+                        else if (messageType == 2)
+                            message = "Club was successfully updates";
+                        else if (messageType == 3)
+                            message = "Club was successfully deleted";
+                        else
+                            throw new Exception();
+                    }
+
+                    request.setAttribute("success", success);
+                    request.setAttribute("message", message);
+
+                }
             } else {
                 throw new Exception();
             }
         }
         catch (Exception e){
-            response.setContentType("text/html");
-            PrintWriter out = response.getWriter();
-            out.print("<h1> No this Clubs</h1>");
-
+            e.printStackTrace();
         }
+
+        request.getRequestDispatcher("/views/navLinksPages/navClubs.jsp").forward(request, response);
+
     }
 }
