@@ -94,6 +94,47 @@
         </tbody>
     </table>
 
+
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+
+            <%
+                int pages = (int)request.getAttribute("pages");
+                int active_page = (int)request.getAttribute("active_page");
+                String currentURL = (String)request.getAttribute("currentURL");
+
+                // to page won't be < 1
+                if(active_page > 1){
+            %>
+            <li class="page-item"><a class="page-link" href="/home<%=currentURL%>&page=<%=active_page-1%>">Previous</a></li>
+            <%
+                }
+                for(int i = 1; i<pages+1; i++){
+                    if(i == active_page){
+            %>
+            <li class="page-item active"><a class="page-link" href="/home<%=currentURL%>&page=<%=i%>"><%=i%></a></li>
+            <%
+            }
+            else{
+            %>
+            <li class="page-item"><a class="page-link" href="/home<%=currentURL%>&page=<%=i%>"><%=i%></a></li>
+            <%
+                    }
+                }
+                // to page won't be > pages
+                if(active_page < pages){
+            %>
+
+            <li class="page-item"><a class="page-link" href="/home?page=<%=active_page+1%>">Next</a></li>
+            <%
+                }
+
+            %>
+        </ul>
+    </nav>
+
+
 </div>
 
 
