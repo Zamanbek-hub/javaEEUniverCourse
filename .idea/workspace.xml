@@ -7,6 +7,9 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -23,6 +26,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/HomeTask_3_second" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -33,6 +37,7 @@
       <option name="presentableId" value="Default" />
       <updated>1599016803956</updated>
       <workItem from="1599016805067" duration="85000" />
+      <workItem from="1601371699092" duration="236000" />
     </task>
     <servers />
   </component>
@@ -40,10 +45,14 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="758" y="173" key="FileChooserDialogImpl" timestamp="1599016852484">
+    <state x="223" y="87" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1601371926252">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
-    <state x="758" y="173" key="FileChooserDialogImpl/0.0.1536.864@0.0.1536.864" timestamp="1599016852484" />
+    <state x="223" y="87" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.864@0.0.1536.864" timestamp="1601371926252" />
+    <state x="758" y="173" key="FileChooserDialogImpl" timestamp="1601371934672">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="758" y="173" key="FileChooserDialogImpl/0.0.1536.864@0.0.1536.864" timestamp="1601371934672" />
     <state x="418" y="52" key="new project wizard" timestamp="1599016854527">
       <screen x="0" y="0" width="1536" height="864" />
     </state>

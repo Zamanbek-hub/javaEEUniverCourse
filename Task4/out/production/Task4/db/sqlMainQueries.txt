@@ -1,0 +1,33 @@
+CREATE TABLE languages (
+                         id serial PRIMARY KEY,
+                         name varchar(255) NOT NULL  UNIQUE CHECK(length(name)>0),
+                         code varchar(5) NOT NULL CHECK(length(code)>0),
+
+);
+
+
+CREATE TABLE publications (
+                        id serial PRIMARY KEY,
+                        name varchar(255) NOT NULL  UNIQUE CHECK(length(name)>0),
+                        description text NOT NULL CHECK(length(description)>0),
+                        rating double precision
+);
+
+CREATE TABLE news (
+                       id serial PRIMARY KEY,
+                       title varchar(255) NOT NULL CHECK(length(title)>0),
+                       short_content text,
+                       content text,
+                       post_date date NOT NULL DEFAULT NOW(),
+                       picture_url text,
+                       language_id int REFERENCES languages(id),
+                       publications_id int REFERENCES publications(id)
+);
+
+
+delete from news where id > 0;
+delete from publications where id > 0;
+delete from languages where id > 0;
+
+drop table news, publications, languages;
+
