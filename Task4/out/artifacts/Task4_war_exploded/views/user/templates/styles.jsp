@@ -21,7 +21,6 @@
 
     .top_menu{
         height: auto;
-        background-color: #68B5F9;
     }
 
     .top_menu_langs{
@@ -35,14 +34,25 @@
         vertical-align: middle;
     }
 
+    .top_menu_title_text{
+        color:darkred;
+        font-weight: bold;
+    }
+
     .top_menu_title{
         font-size: 30px;
         text-align: center;
     }
 
+    .top_menu_sign_in{
+        margin-left: 20px;
+    }
+
     .dropdown{
         padding-top: 0px;
     }
+
+
 
 
     nav a{
@@ -52,10 +62,7 @@
 
     }
 
-    .nav-item{
-        padding-left: 50px;
-        color:white;
-    }
+
 
     header{
         margin-top: 50px;
@@ -96,8 +103,38 @@
     }
 
     .about_pub{
+        margin-top: 30px;
         background-color: #68B5F9;
+        height:400px;
+        border-radius: 7px;
+        color:white;
     }
+
+    .about_pub_body{
+        width:80%;
+        height: auto;
+        display: block;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .about_links{
+        width:80%;
+        display: block;
+        margin-right: auto;
+        margin-left: auto;
+        color:blue;
+    }
+
+    .month_links {
+        cursor: pointer;
+    }
+
+    .month_links:hover{
+        color:black;
+    }
+
+
 
 
 </style>

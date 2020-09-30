@@ -24,6 +24,8 @@ public class IndividNewsServlet extends HttpServlet {
             News news = DBManager.getNews(id);
             if(news != null) {
                 request.setAttribute("news", news);
+                request.setAttribute("languages", DBManager.getLanguages());
+                request.setAttribute("publications", DBManager.getPublications());
                 request.getRequestDispatcher("/views/user/newsIndividPage.jsp").forward(request, response);
             }
             else{

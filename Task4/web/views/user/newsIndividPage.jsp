@@ -34,7 +34,6 @@
             <div class="card-body">
                 <p class="card-text"><%=n.getShort_content()%></p>
                 <p class="card-text"><%=n.getContent()%></p>
-                <a href="/" class="btn btn-primary">Read More</a>
             </div>
         </div>
     </div>
@@ -47,10 +46,27 @@
                 <h4 class="title">About <%=n.getPublication().getName()%></h4>
                 <p class="card-text"><%=n.getPublication().getDescription()%></p>
                 <p class="card-text">Rating:<%=n.getPublication().getRating()%></p>
-                <a href="/" class="">Read More</a>
             </div>
         </div>
+
+        <div class="about_links">
+            <ul>
+                <li><a class="month_links" href="/news_date?date=2020-01">January 2020</a></li>
+                <li><a class="month_links" href="/news_date?date=2020-02">February 2020</a></li>
+                <li><a class="month_links" href="/news_date?date=2020-03">March 2020</a></li>
+                <li><a class="month_links" href="/news_date?date=2020-04">April 2020</a></li>
+                <li><a class="month_links" href="/news_date?date=2020-05">May 2020</a></li>
+                <li><a class="month_links" href="/news_date?date=2020-06">June 2020</a></li>
+                <li><a class="month_links" href="/news_date?date=2020-07">Jule 2020</a></li>
+                <li><a class="month_links" href="/news_date?date=2020-08">August 2020</a></li>
+                <li><a class="month_links" href="/news_date?date=2020-09">September 2020</a></li>
+                <li><a class="month_links" href="/news_date?date=2020-10">October 2020</a></li>
+                <li><a class="month_links" href="/news_date?date=2020-11">November 2020</a></li>
+                <li><a class="month_links" href="/news_date?date=2020-12">December 2020</a></li>
+            </ul>
+        </div>
     </div>
+
     <%
 
 
@@ -58,6 +74,8 @@
 
 
     %>
+
+
 
 </div>
 </div>

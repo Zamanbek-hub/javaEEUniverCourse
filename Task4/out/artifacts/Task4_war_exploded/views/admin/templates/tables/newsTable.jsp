@@ -55,7 +55,7 @@
                     <td><%=n.getPost_date()%></td>
                     <td><%=n.getPublication().getName()%></td>
                     <td>
-                        <a href="news_details">
+                        <a href="/news?id=<%=n.getId()%>">
                             <button class="btn btn-primary float-right" style="margin-right: 10px;" >Details</button>
                         </a>
                     </td>

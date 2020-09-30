@@ -53,7 +53,9 @@
     }
 
 
-
+    nav{
+        color: white;
+    }
 
     nav a{
         padding-left: 50px;
@@ -62,15 +64,22 @@
 
     }
 
+    .pubs{
+        margin-left:40px;
+        color: black;
+    }
+
+
 
 
     header{
         margin-top: 50px;
         width:100%;
         height: 200px;
-        background-color: #68B5F9;
+        background-color:white;
         border-radius: 8px;
-        color:white;
+        border: 1px solid red;
+        color:red;
     }
 
     header .header_div{

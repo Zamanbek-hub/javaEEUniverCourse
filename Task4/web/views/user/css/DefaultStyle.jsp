@@ -53,13 +53,20 @@
     }
 
 
-
+    nav{
+        background-color: #2B9E74;
+    }
 
     nav a{
         padding-left: 50px;
         padding-right: 50px;
         color:white;
 
+    }
+
+    .pubs{
+        margin-left:40px;
+        color:white;
     }
 
 

@@ -1,4 +1,7 @@
 <style>
+    body{
+        background-color: #5783A9;
+    }
     ul {
         padding-left: 0;
         list-style-type: none;
@@ -53,7 +56,11 @@
     }
 
 
+    nav{
+        border: 1px solid white;
+        background-color: transparent;
 
+    }
 
     nav a{
         padding-left: 50px;
@@ -62,15 +69,23 @@
 
     }
 
+    .pubs{
+        margin-left:40px;
+        color: white;
+        font-weight: bold;
+    }
+
+
 
 
     header{
         margin-top: 50px;
         width:100%;
         height: 200px;
-        background-color: #68B5F9;
+        background-color:white;
         border-radius: 8px;
-        color:white;
+        border: 1px solid red;
+        color:red;
     }
 
     header .header_div{

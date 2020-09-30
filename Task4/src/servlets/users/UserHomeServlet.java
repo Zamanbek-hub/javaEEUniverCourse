@@ -27,32 +27,46 @@ public class UserHomeServlet extends HttpServlet {
         ArrayList<Publication> publications = DBManager.getPublications();
         ArrayList<Language> languages = DBManager.getLanguages();
         ArrayList<News> news = DBManager.getAllNewsByLanguage(languages.get(0).getId());
+        Language language = languages.get(0);
+        String style = "1";
 
         Cookie[] cookies = request.getCookies();
 
         for(Cookie cookie: cookies){
             if(cookie.getName().equals("language_id")){
                 news = DBManager.getAllNewsByLanguage(Long.parseLong(cookie.getValue()));
+                language = DBManager.getLanguage(Long.parseLong(cookie.getValue()));
+            }
+            if(cookie.getName().equals("style")){
+                style = cookie.getValue();
             }
         }
+
 
 
         if (publication_id != null){
+            System.out.println("Removed out");
+            ArrayList<News> news1 = new ArrayList<>();
             for (int i = 0; i < news.size(); i++){
-                if(news.get(i).getPublication().getId() != Long.parseLong(publication_id)){
-                    news.remove(news.get(i));
+                if(news.get(i).getPublication().getId() == Long.parseLong(publication_id)){
+                    news1.add(news.get(i));
                 }
             }
+
+            news = news1;
         }
 
+        System.out.println("Style in back = " + style);
 
 
 
-        System.out.println("User here 1");
+
+
         request.setAttribute("languages", languages);
+        request.setAttribute("language", language);
         request.setAttribute("publications", publications);
         request.setAttribute("news", news);
-        System.out.println("User here 2");
+        request.setAttribute("style", style);
         request.setAttribute("table", "languageTable");
         request.getRequestDispatcher("/views/user/userHOME.jsp").forward(request, response);
     }

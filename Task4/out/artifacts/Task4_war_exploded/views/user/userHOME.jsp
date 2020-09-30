@@ -10,7 +10,17 @@
 <head>
     <title>Title</title>
     <%@include file="./templates/cdns.jsp" %>
-    <%@include file="./templates/styles.jsp" %>
+    <% String style = (String)request.getAttribute("style");%>
+    <%if(style.equals("1")){
+        System.out.println("We are here 1");%>
+    <%@include file="./css/DefaultStyle.jsp" %>
+    <%}%>
+    <%if(style.equals("2")){%>
+    <%@include file="./css/LingtStyle.jsp" %>
+    <%}%>
+    <%if(style.equals("3")){%>
+    <%@include file="./css/DarkStyle.jsp" %>
+    <%}%>
 
 </head>
 <body>
