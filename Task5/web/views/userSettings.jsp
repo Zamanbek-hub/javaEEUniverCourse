@@ -1,5 +1,6 @@
 <%@ page import="db.classes.User" %>
-<%@ page import="java.util.concurrent.TimeUnit" %><%--
+<%@ page import="java.util.concurrent.TimeUnit" %>
+<%@ page import="java.util.ArrayList" %><%--
   Created by IntelliJ IDEA.
   User: zaman
   Date: 10/6/2020
@@ -34,10 +35,10 @@
                         ,<%=diff%> years
                     </div>
                     <div class="profile_part">
-                        <a style="color: dodgerblue;"><i class="fas fa-address-card"></i>My Profile</a>
+                        <a href="/profile" style="color: dodgerblue;"><i class="fas fa-address-card"></i>My Profile</a>
                     </div>
                     <div class="profile_part">
-                        <a style="color: dodgerblue;"><i class="fas fa-cogs"></i>Settings</a>
+                        <a href="/" style="color: dodgerblue;"><i class="fas fa-cogs"></i>Settings</a>
                     </div>
                     <div class="profile_part bound">
                         <a href="/logout" style="color: darkred;"><i class="fas fa-sign-out-alt"></i>Logout</a>
@@ -115,27 +116,43 @@
 
         <div class="col-s3">
             <div style="margin-left: 30px;">
+                <%
+                    ArrayList<User> latest_birthdays = (ArrayList<User>) request.getAttribute("latest_birthdays");
+                    if(latest_birthdays != null){
+                %>
                 <div class="card" style="background-color: #57BD9E; width: 15rem;">
-                    <div class="card-header" >
+                    <div class="card-header" style="color: white; font-weight: bold; font-size: 15px;">
                         Latest BirthDays
                     </div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
+                        <%
+                            String [] months = new String[]{"January", "February", "March", "April", "May", "June" +
+                                    "Jule", "August", "September", "October", "November", "December"};
+                            for(User birthday: latest_birthdays){
+                                if(birthday.getId() != user.getId()){
+                        %>
+                        <li class="list-group-item"><%=birthday.getFull_name()%>, <%=birthday.getBirth_date().getDay()%> <%=months[birthday.getBirth_date().getMonth() - 1]%></li>
+                        <%
+                                }
+                            }
+                        %>
                     </ul>
                 </div>
+                <%
+                    }
+                %>
 
                 <br/>
 
                 <div class="card" style="background-color: #57BD9E; width: 15rem;">
-                    <div class="card-header">
+                    <div class="card-header" style="color: white; font-weight: bold; font-size: 15px;">
                         My Games
                     </div>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
+                        <li class="list-group-item" style="color:blue;"><i class="fas fa-futbol"></i> <strong>FOOTBALL ONLINE</strong>  </li>
+                        <li class="list-group-item" style="color:blue;"><i class="fas fa-table-tennis"></i>  <strong>PING PONG ONLINE</strong> </li>
+                        <li class="list-group-item" style="color:blue;"><i class="fas fa-chess"></i> <strong>CHESS MASTERS</strong></li>
+                        <li class="list-group-item" style="color:blue;"><i class="fas fa-car"></i> <strong>RACES ONLINE</strong></li>
                     </ul>
                 </div>
             </div>

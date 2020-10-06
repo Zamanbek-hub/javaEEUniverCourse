@@ -3,7 +3,7 @@ package db.classes;
 import java.sql.Date;
 
 public class Post {
-    private int id;
+    private Long id;
     private String title;
     private String short_content;
     private String content;
@@ -21,7 +21,22 @@ public class Post {
         this.author = author;
     }
 
-    public Post(int id, String title, String short_content, String content, Date post_date, User author) {
+    public Post(String title, String short_content, String content, User author) {
+        this.title = title;
+        this.short_content = short_content;
+        this.content = content;
+        this.author = author;
+    }
+
+    public Post(Long id, String title, String short_content, String content, User author) {
+        this.id = id;
+        this.title = title;
+        this.short_content = short_content;
+        this.content = content;
+        this.author = author;
+    }
+
+    public Post(Long id, String title, String short_content, String content, Date post_date, User author) {
         this.id = id;
         this.title = title;
         this.short_content = short_content;
@@ -30,11 +45,11 @@ public class Post {
         this.author = author;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

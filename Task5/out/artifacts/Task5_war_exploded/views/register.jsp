@@ -46,13 +46,17 @@
             <input type="date" class="form-control" id="birthdate" name="birthdate">
             <small  class="form-text text-muted">Input your birthdate</small>
         </div>
-        <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="remember_me" name="remember_me">
-            <label class="form-check-label" for="remember_me">Remember me</label>
-        </div>
+<%--        <div class="form-check">--%>
+<%--            <input type="checkbox" class="form-check-input" id="remember_me" name="remember_me">--%>
+<%--            <label class="form-check-label" for="remember_me">Remember me</label>--%>
+<%--        </div>--%>
         <button type="submit" class="btn submit_button">Submit</button>
     </form>
+
+
 </div>
+<br/>
+<br/>
 <%@include file="templates/footer.jsp" %>
 </body>
 </html>

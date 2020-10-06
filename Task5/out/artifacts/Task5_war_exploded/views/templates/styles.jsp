@@ -60,11 +60,15 @@
 
     .profile_menu a{
         margin-left: 20px;
+        margin-top: 5px;
     }
 
     .profile_part{
         border:  1px solid slategrey;
+        height: 40px;
     }
+
+
 
     .bound{
         border:  1px solid slategray;
@@ -75,12 +79,18 @@
 
     .posts .card{
         width: 90%;
-        height: 200px;
+        height: auto;
         display: block;
         margin-left: auto;
         margin-right: auto;
     }
 
+
+    textarea{
+        min-height: 100px;
+        max-height: 200px;
+        min-width: 200px;
+    }
 
 
 </style>

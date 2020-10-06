@@ -2,6 +2,7 @@ package servlets;
 
 import db.classes.Message;
 import db.classes.User;
+import db.managers.DBManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -31,6 +32,7 @@ public class UserProfileServlet extends HttpServlet {
                 }
             }
 
+            request.setAttribute("latest_birthdays", DBManager.getUsersByBirthDate());
             request.setAttribute("online", true);
             request.getRequestDispatcher("/views/userSettings.jsp").forward(request,response);
         } else {

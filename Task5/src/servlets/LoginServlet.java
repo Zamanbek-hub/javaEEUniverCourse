@@ -25,14 +25,8 @@ public class LoginServlet extends HttpServlet {
             request.getSession().setAttribute("current_user", user);
             if(remember_me){
                 Cookie token = new Cookie("token", email);
-                Cookie remember = new Cookie("remember", "yes");
-
                 token.setMaxAge(24 * 60 * 60);
-                remember.setMaxAge(24 * 60 * 60);
-
                 response.addCookie(token);
-                response.addCookie(remember);
-
             }
 
             response.sendRedirect("/");

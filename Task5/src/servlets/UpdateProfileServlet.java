@@ -5,6 +5,7 @@ import db.managers.DBManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,11 +26,24 @@ public class UpdateProfileServlet extends HttpServlet {
             if (current_user != null) {
                 user.setId(current_user.getId());
 
-                System.out.println("user_id =" + current_user.getId());
                 if (DBManager.updateUserProfile(user)) {
                     current_user = DBManager.getUserById(user.getId());
 
-                    System.out.println("current_user in update profile =" + current_user);
+                    Cookie [] cookies = request.getCookies();
+                    boolean isRemembered = false;
+                    if(cookies != null){
+                        for(Cookie c : cookies){
+                            if(c.getName().equals("token")){
+                                isRemembered = true;
+                            }
+                        }
+                    }
+
+                    if(isRemembered) {
+                        Cookie token = new Cookie("token", current_user.getEmail());
+                        token.setMaxAge(24 * 60 * 60);
+                        response.addCookie(token);
+                    }
 
                     request.getSession().setAttribute("current_user", current_user);
                     response.sendRedirect("/profile?success=true&type=profile");
