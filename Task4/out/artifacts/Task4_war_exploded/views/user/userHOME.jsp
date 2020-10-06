@@ -43,13 +43,13 @@
 
         %>
         <div class="card col-5">
-            <img class="card-img-top" src="<%=n.getPicture_url()%>" alt="Card image cap">
             <div class="card-body">
-                <h5 class="card-title"><%=n.getPublication().getName()%></h5>
-                <h4 class="card-title"><%=n.getTitle()%></h4>
-                <h5 class="card-title"><%=n.getPost_date()%></h5>
-                <p class="card-text"><%=n.getShort_content()%></p>
-                <a href="/news?id=<%=n.getId()%>" class="btn btn-primary">Read More</a>
+                <h4 class="card-title">First Java EE</h4>
+                <p class="card-text">I created</p>
+                <a href="" class="btn btn-outline-primary">Read More</a>
+            </div>
+            <div class="card-footer">
+
             </div>
         </div>
         <%
