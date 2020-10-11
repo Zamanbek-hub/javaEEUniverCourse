@@ -96,7 +96,7 @@
             <br/>
         </div>
 
-        <div class="col-s3">
+        <div class="col-3">
             <div style="margin-left: 30px;">
                 <%
                     ArrayList<User> latest_birthdays = (ArrayList<User>) request.getAttribute("latest_birthdays");

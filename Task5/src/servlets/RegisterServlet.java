@@ -1,17 +1,15 @@
 package servlets;
 
-import db.classes.Message;
+import db.classes.Alert;
 import db.classes.User;
 import db.managers.DBManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.rmi.server.ExportException;
 import java.sql.Date;
 
 @WebServlet(value="/register")
@@ -49,7 +47,7 @@ public class RegisterServlet extends HttpServlet {
 
             if (messageType != null && messageType.equals("0")) {
                 System.out.println("we are here");
-                request.setAttribute("message", new Message(false, "Please input right your data", false));
+                request.setAttribute("alert", DBManager.getAlert(false, -1,"Please input right your data", false));
             }
 
             request.setAttribute("online", false);

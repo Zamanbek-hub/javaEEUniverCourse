@@ -13,7 +13,7 @@
         </div>
         <div class="order-3 dual-collapse2">
             <a href="/"><i class="fas fa-rss"></i>Feed</a>
-            <a href="/"><i class="fas fa-user-friends"></i>My Friends</a>
+            <a href="/friends"><i class="fas fa-user-friends"></i>My Friends</a>
             <a href="/"><i class="fa fa-users" aria-hidden="true"></i>Groups</a>
             <a href="/"><i class="fas fa-plus-circle"></i>My Posts</a>
             <a href="/"><i class="fab fa-telegram-plane"></i>Messages</a>

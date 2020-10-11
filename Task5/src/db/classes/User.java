@@ -28,6 +28,14 @@ public class User {
         this.birth_date = birth_date;
     }
 
+    public User(Long id, String email, String full_name, Date birth_date, String picture_url) {
+        this.id = id;
+        this.email = email;
+        this.full_name = full_name;
+        this.birth_date = birth_date;
+        this.picture_url = picture_url;
+    }
+
     public User(Long id, String email, String password, String full_name, Date birth_date, String picture_url) {
         this.id = id;
         this.email = email;

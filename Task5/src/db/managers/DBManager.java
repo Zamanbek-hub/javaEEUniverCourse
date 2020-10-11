@@ -1,6 +1,7 @@
 package db.managers;
 
-import db.classes.Message;
+import db.classes.Alert;
+import db.classes.Friend;
 import db.classes.Post;
 import db.classes.User;
 
@@ -14,7 +15,7 @@ public class DBManager {
     private static Connection connection;
     private static final String url = "jdbc:postgresql://rogue.db.elephantsql.com:5432/bvgfhbsl";
     private static final String user = "bvgfhbsl";
-    private static final String password = "TMtObo_nWsigJgVW5ivB7oVElXs5fzvU";
+    private static final String password = "v6fx99p123sROhhH3dTSgeoNgTYHteXZ";
     private static PreparedStatement statement;
 
     static {
@@ -35,10 +36,33 @@ public class DBManager {
     }
 
 
+    // ************************** Password **************************
+    public static String getCrypt(String email, String password){
+        String query = "SELECT password FROM users\n" +
+                "WHERE email = ? and password = crypt(?,password);";
+        try {
+            statement = connection.prepareStatement(query);
+            statement.setString(1,email);
+            statement.setString(2,password);
+            ResultSet result = statement.executeQuery();
+            result.next();
+
+            return result.getString("password");
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
+
     // ************************** User **************************
 
     public static User getUser(String email, String password){
-        String query = "select * from  users where email = ? and password = ?";
+        String query = "select * from  users where email = ? and password = crypt(?, password)";
         try {
             statement = connection.prepareStatement(query);
             statement.setString(1,email);
@@ -70,6 +94,33 @@ public class DBManager {
         try {
             statement = connection.prepareStatement(query);
             statement.setString(1,email);
+
+            ResultSet result = statement.executeQuery();
+
+            result.next();
+
+            User user = new User(
+                    result.getLong("id"),
+                    result.getString("email"),
+                    result.getString("password"),
+                    result.getString("full_name"),
+                    result.getDate("birth_date"),
+                    result.getString("picture_url")
+            );
+            return user;
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static User getUserByPassword(String password){
+        String query = "select * from  users where password = ? ";
+        try {
+            statement = connection.prepareStatement(query);
+            statement.setString(1,password);
 
             ResultSet result = statement.executeQuery();
 
@@ -158,9 +209,11 @@ public class DBManager {
         return false;
     }
 
+
+
     public static boolean updateUserPassword(User user){
 
-        String query = "Update users set password= ? where id = ?";
+        String query = "Update users set password = crypt(?, gen_salt('md5')) where id = ?";
         System.out.println(user);
         try {
             statement = connection.prepareStatement(query);
@@ -177,7 +230,7 @@ public class DBManager {
     }
 
     public static boolean createUser(User user){
-        String query = "INSERT INTO users(email, password, full_name, birth_date) VALUES (?,?, ?, ?)";
+        String query = "INSERT INTO users(email, password, full_name, birth_date) VALUES (?,crypt(?, gen_salt('md5')), ?, ?)";
         try {
             statement = connection.prepareStatement(query);
             statement.setString(1,user.getEmail());
@@ -196,7 +249,7 @@ public class DBManager {
 
 
     public static ArrayList<User> getUsersByBirthDate(){
-        String query = "SELECT * FROM  users ORDER BY birth_date ASC";
+        String query = "SELECT id, email, full_name, birth_date, picture_url FROM  users ORDER BY birth_date ASC";
         ArrayList<User> users = new ArrayList<>();
         try {
             statement = connection.prepareStatement(query);
@@ -206,7 +259,6 @@ public class DBManager {
                 users.add(new User(
                         resultset.getLong("id"),
                         resultset.getString("email"),
-                        resultset.getString("password"),
                         resultset.getString("full_name"),
                         resultset.getDate("birth_date"),
                         resultset.getString("picture_url")
@@ -220,7 +272,7 @@ public class DBManager {
             ArrayList<User> users2 = new ArrayList<>();
             for(int i = users.size() - 1; i >= 0; i--){
 
-                if(count == 3)
+                if(count == 4)
                    break;
 
                 users2.add(users.get(i));
@@ -251,7 +303,7 @@ public class DBManager {
 
     public static Post getPost(Long post_id){
         String query = "SELECT p.id as post_id, p.title, p.short_content, p.content, p.post_date,  \n" +
-                "                       u.id as user_id,  u.email, u.password, u.full_name, u.birth_date, u.picture_url\n" +
+                "                       u.id as user_id,  u.email, u.full_name, u.birth_date, u.picture_url\n" +
                 "                FROM posts p\n" +
                 "                    INNER JOIN users u on p.author_id = u.id\n" +
                 "                WHERE p.id = ? ORDER BY p.post_date DESC;";
@@ -272,7 +324,6 @@ public class DBManager {
                     new User(
                             result.getLong("user_id"),
                             result.getString("email"),
-                            result.getString("password"),
                             result.getString("full_name"),
                             result.getDate("birth_date"),
                             result.getString("picture_url")
@@ -343,7 +394,7 @@ public class DBManager {
 
     public static ArrayList<Post> getPostsByUser(Long user_id){
         String query = "SELECT p.id as post_id, p.title, p.short_content, p.content, p.post_date,  \n" +
-                "                       u.id as user_id,  u.email, u.password, u.full_name, u.birth_date, u.picture_url\n" +
+                "                       u.id as user_id,  u.email,  u.full_name, u.birth_date, u.picture_url\n" +
                 "                FROM users u\n" +
                 "                    INNER JOIN posts p on p.author_id = u.id\n" +
                 "                WHERE u.id = ? ORDER BY p.post_date DESC;";
@@ -367,7 +418,6 @@ public class DBManager {
                             new User(
                                     resultSet.getLong("user_id"),
                                     resultSet.getString("email"),
-                                    resultSet.getString("password"),
                                     resultSet.getString("full_name"),
                                     resultSet.getDate("birth_date"),
                                     resultSet.getString("picture_url")
@@ -389,26 +439,80 @@ public class DBManager {
     }
 
 
+    // ************************** Friends **************************
+    public static ArrayList<Friend> getFriends(Long user_id){
+        String query = "SELECT p.id as post_id, p.title, p.short_content, p.content, p.post_date,  \n" +
+                "                       u.id as user_id,  u.email, u.full_name, u.birth_date, u.picture_url\n" +
+                "                FROM users u\n" +
+                "                    INNER JOIN posts p on p.author_id = u.id\n" +
+                "                WHERE u.id = ? ORDER BY p.post_date DESC;";
+
+        ArrayList<Friend> friends = new ArrayList<>();
+
+        try{
+            if(connection != null) {
+                statement = connection.prepareStatement(query);
+                statement.setLong(1, user_id);
+
+                ResultSet resultSet = statement.executeQuery();
+
+                while (resultSet.next()) {
+//                    friends.add(new Post(
+//                            resultSet.getLong("post_id"),
+//                            resultSet.getString("title"),
+//                            resultSet.getString("short_content"),
+//                            resultSet.getString("content"),
+//                            resultSet.getDate("post_date"),
+//                            new User(
+//                                    resultSet.getLong("user_id"),
+//                                    resultSet.getString("email"),
+//                                    resultSet.getString("full_name"),
+//                                    resultSet.getDate("birth_date"),
+//                                    resultSet.getString("picture_url")
+//                            )
+//                    ));
+                }
+
+                System.out.println(friends);
+            }
+            else{
+                System.out.println("No connection");
+            }
+            return friends;
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+
 
     // ************************** Messages **************************
 
-    public static Message getMessage(boolean success, int messageType, String object, boolean hidden){
-        String message = "";
+    public static Alert getAlert(boolean success, int messageType, String message, boolean hidden){
 
-        if(!hidden) {
+        if(!hidden && messageType != -1) {
+
             if (messageType == 1)
-                message = "new " + object + " was successfully added";
+                message = "new " + message + " was successfully added";
             else if (messageType == 2)
-                message = object + " was successfully updates";
+                message = message + " was successfully updates";
             else if (messageType == 3)
-                message = object + " was successfully deleted";
+                message = message + " was successfully deleted";
+
 
             System.out.println("Here 1 1");
-            return new Message(success, message, true);
+            return new Alert(success, message, false);
         }
 
         System.out.println("Here 2 2");
-        return new Message(success, message, false);
+
+        if(messageType == 0)
+            message = "An error occurred";
+
+        return new Alert(success, message, false);
 
 
     }

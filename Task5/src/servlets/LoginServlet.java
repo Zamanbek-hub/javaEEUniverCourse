@@ -1,6 +1,6 @@
 package servlets;
 
-import db.classes.Message;
+import db.classes.Alert;
 import db.classes.User;
 import db.managers.DBManager;
 
@@ -24,7 +24,7 @@ public class LoginServlet extends HttpServlet {
         if(user != null) {
             request.getSession().setAttribute("current_user", user);
             if(remember_me){
-                Cookie token = new Cookie("token", email);
+                Cookie token = new Cookie("token", DBManager.getCrypt(email,password));
                 token.setMaxAge(24 * 60 * 60);
                 response.addCookie(token);
             }
@@ -39,13 +39,27 @@ public class LoginServlet extends HttpServlet {
         User current_user = (User) request.getSession().getAttribute("current_user");
         System.out.println("current_user = " + current_user);
         if(current_user == null) {
-            String messageType = request.getParameter("type");
 
-            if (messageType != null && messageType.equals("0"))
-                request.setAttribute("message", new Message(false, "Invalid login or password", false));
+            Cookie [] cookies = request.getCookies();
+            boolean isRemember = false;
+            if(cookies != null){
+                for(Cookie c : cookies){
+                    if(c.getName().equals("token")){
+                        isRemember = true;
+                        response.sendRedirect("/");
+                    }
+                }
+            }
 
-            request.setAttribute("online", false);
-            request.getRequestDispatcher("/views/login.jsp").forward(request, response);
+            if(!isRemember) {
+                String messageType = request.getParameter("type");
+
+                if (messageType != null && messageType.equals("0"))
+                    request.setAttribute("alert", DBManager.getAlert(false, -1, "Invalid login or password", false));
+
+                request.setAttribute("online", false);
+                request.getRequestDispatcher("/views/login.jsp").forward(request, response);
+            }
         } else {
             response.sendRedirect("/");
         }

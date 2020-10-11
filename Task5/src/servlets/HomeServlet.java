@@ -27,9 +27,8 @@ public class HomeServlet extends HttpServlet {
             String messageType = request.getParameter("type");
 
             if(messageType != null)
-                request.setAttribute("message",DBManager.getMessage(success, Integer.parseInt(messageType),"Post", false));
-            else
-                request.setAttribute("message",DBManager.getMessage(success, 0,"Post", false));
+                request.setAttribute("alert", DBManager.getAlert(success, Integer.parseInt(messageType),"Post", false));
+
 
 
             // Attributes
@@ -44,7 +43,7 @@ public class HomeServlet extends HttpServlet {
             if(cookies != null){
                 for(Cookie c : cookies){
                     if(c.getName().equals("token")){
-                        request.getSession().setAttribute("current_user", DBManager.getUserByEmail(c.getValue()));
+                        request.getSession().setAttribute("current_user", DBManager.getUserByPassword(c.getValue()));
                     }
                 }
             }

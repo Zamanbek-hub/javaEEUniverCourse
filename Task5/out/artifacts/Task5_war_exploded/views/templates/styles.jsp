@@ -2,6 +2,13 @@
     String mainBGColor = "navy";
 %>
 <style>
+    button{
+        font-weight: 1000;
+    }
+
+    i{
+        padding-right: 5px;
+    }
 
     nav{
         background-color: <%=mainBGColor%>;

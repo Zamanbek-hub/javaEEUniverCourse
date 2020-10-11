@@ -14,7 +14,7 @@
 </head>
 <body>
 <%@include file="templates/navbar.jsp" %>
-<%@include file="./templates/messages.jsp" %>
+<%@include file="templates/alerts.jsp" %>
 <div class="container d-flex justify-content-center">
     <form method="POST" action="/login">
         <div class="title">
