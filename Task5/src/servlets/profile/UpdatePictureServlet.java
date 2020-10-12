@@ -20,20 +20,18 @@ public class UpdatePictureServlet extends HttpServlet {
 
             User current_user = (User) request.getSession().getAttribute("current_user");
 
-            if (current_user != null) {
-                user.setId(current_user.getId());
 
-                System.out.println("user_id =" + current_user.getId());
-                if (DBManager.updateUserPicture(user)) {
+            user.setId(current_user.getId());
 
-                    request.getSession().setAttribute("current_user", DBManager.getUserById(user.getId()));
-                    response.sendRedirect("/profile?success=true&type=picture");
-                } else {
-                    throw new Exception();
-                }
+            System.out.println("user_id =" + current_user.getId());
+            if (DBManager.updateUserPicture(user)) {
+
+                request.getSession().setAttribute("current_user", DBManager.getUserById(user.getId()));
+                response.sendRedirect("/profile?success=true&type=picture");
             } else {
                 throw new Exception();
             }
+
         } catch (Exception e){
             e.printStackTrace();
             response.sendRedirect("/profile?success=false&type=picture");

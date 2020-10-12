@@ -21,17 +21,14 @@ public class PostIndividServlet extends HttpServlet {
         try {
             User current_user = (User) request.getSession().getAttribute("current_user");
 
-            if(current_user != null) {
-                Long post_id = Long.parseLong(request.getParameter("post_id"));
-                Post post = DBManager.getPost(post_id);
-                if(post != null) {
-                    request.setAttribute("online", true);
-                    request.setAttribute("post", post);
-                    request.setAttribute("latest_birthdays", DBManager.getUsersByBirthDate());
-                    request.getRequestDispatcher("/views/postIndivid.jsp").forward(request, response);
-                } else {
-                    throw new Exception();
-                }
+
+            Long post_id = Long.parseLong(request.getParameter("post_id"));
+            Post post = DBManager.getPost(post_id);
+            if (post != null) {
+                request.setAttribute("online", true);
+                request.setAttribute("post", post);
+                request.setAttribute("latest_birthdays", DBManager.getUsersByBirthDate());
+                request.getRequestDispatcher("/views/postIndivid.jsp").forward(request, response);
             } else {
                 throw new Exception();
             }

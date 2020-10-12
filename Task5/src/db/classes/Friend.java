@@ -3,7 +3,7 @@ package db.classes;
 import java.sql.Date;
 
 public class Friend {
-    private int id;
+    private Long id;
     private User user;
     private User friend;
     private Date added_time;
@@ -17,18 +17,18 @@ public class Friend {
         this.added_time = added_time;
     }
 
-    public Friend(int id, User user, User friend, Date added_time) {
+    public Friend(Long id, User user, User friend, Date added_time) {
         this.id = id;
         this.user = user;
         this.friend = friend;
         this.added_time = added_time;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

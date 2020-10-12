@@ -4,12 +4,13 @@
         <div class="profile_menu">
             <div class="profile_part bound">
                 <a>
-                    <strong><%=user.getFull_name()%> </strong>
+                    <strong><%=user.getFull_name()%>,
                     <%
                         long diffInMillies = Math.abs(user.getBirth_date().getTime() - new java.sql.Date(System.currentTimeMillis()).getTime());
                         long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS) / 365;
                     %>
-                    ,<%=diff%> years
+                    <%=diff%> years
+                    </strong>
 
                 </a>
             </div>

@@ -68,17 +68,18 @@
     .profile_menu a{
         margin-left: 20px;
         margin-top: 5px;
+        font-weight: bold;
     }
 
     .profile_part{
-        border:  1px solid slategrey;
+        border:  1px solid #CDCCCC;
         height: 40px;
     }
 
 
 
     .bound{
-        border:  1px solid slategray;
+        border:  1px solid #CDCCCC;
         border-top-left-radius: 3px;
         border-top-right-radius: 3px;
 

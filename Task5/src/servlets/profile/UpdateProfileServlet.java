@@ -23,20 +23,18 @@ public class UpdateProfileServlet extends HttpServlet {
 
             User current_user = (User) request.getSession().getAttribute("current_user");
 
-            if (current_user != null) {
-                user.setId(current_user.getId());
 
-                if (DBManager.updateUserProfile(user)) {
-                    current_user = DBManager.getUserById(user.getId());
+            user.setId(current_user.getId());
 
-                    request.getSession().setAttribute("current_user", current_user);
-                    response.sendRedirect("/profile?success=true&type=profile");
-                } else {
-                    throw new Exception();
-                }
+            if (DBManager.updateUserProfile(user)) {
+                current_user = DBManager.getUserById(user.getId());
+
+                request.getSession().setAttribute("current_user", current_user);
+                response.sendRedirect("/profile?success=true&type=profile");
             } else {
                 throw new Exception();
             }
+
         } catch (Exception e){
             e.printStackTrace();
             response.sendRedirect("/profile?success=false&type=profile");

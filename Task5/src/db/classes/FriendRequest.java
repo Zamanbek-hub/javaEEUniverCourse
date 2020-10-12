@@ -3,12 +3,16 @@ package db.classes;
 import java.sql.Date;
 
 public class FriendRequest {
-    private int id;
+    private Long id;
     private User user;
     private User request_sender;
     private Date sent_time;
 
     public FriendRequest() {
+    }
+
+    public FriendRequest(Long id) {
+        this.id = id;
     }
 
     public FriendRequest(User user, User request_sender, Date sent_time) {
@@ -17,18 +21,18 @@ public class FriendRequest {
         this.sent_time = sent_time;
     }
 
-    public FriendRequest(int id, User user, User request_sender, Date sent_time) {
+    public FriendRequest(Long id, User user, User request_sender, Date sent_time) {
         this.id = id;
         this.user = user;
         this.request_sender = request_sender;
         this.sent_time = sent_time;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

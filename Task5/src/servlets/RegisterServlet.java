@@ -42,18 +42,16 @@ public class RegisterServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User current_user = (User) request.getSession().getAttribute("current_user");
         System.out.println("current_user = " + current_user);
-        if (current_user == null) {
-            String messageType = request.getParameter("type");
 
-            if (messageType != null && messageType.equals("0")) {
-                System.out.println("we are here");
-                request.setAttribute("alert", DBManager.getAlert(false, -1,"Please input right your data", false));
-            }
+        String messageType = request.getParameter("type");
 
-            request.setAttribute("online", false);
-            request.getRequestDispatcher("/views/register.jsp").forward(request, response);
-        } else {
-            response.sendRedirect("/");
+        if (messageType != null && messageType.equals("0")) {
+            System.out.println("we are here");
+            request.setAttribute("alert", DBManager.getAlert(false, -1, "Please input right your data", false));
         }
+
+        request.setAttribute("online", false);
+        request.getRequestDispatcher("/views/register.jsp").forward(request, response);
+
     }
 }

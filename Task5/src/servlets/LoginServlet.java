@@ -38,30 +38,16 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User current_user = (User) request.getSession().getAttribute("current_user");
         System.out.println("current_user = " + current_user);
-        if(current_user == null) {
 
-            Cookie [] cookies = request.getCookies();
-            boolean isRemember = false;
-            if(cookies != null){
-                for(Cookie c : cookies){
-                    if(c.getName().equals("token")){
-                        isRemember = true;
-                        response.sendRedirect("/");
-                    }
-                }
-            }
 
-            if(!isRemember) {
-                String messageType = request.getParameter("type");
+        String messageType = request.getParameter("type");
 
-                if (messageType != null && messageType.equals("0"))
-                    request.setAttribute("alert", DBManager.getAlert(false, -1, "Invalid login or password", false));
+        System.out.println("I am in LoginServlet");
+        if (messageType != null && messageType.equals("0"))
+            request.setAttribute("alert", DBManager.getAlert(false, -1, "Invalid login or password", false));
 
-                request.setAttribute("online", false);
-                request.getRequestDispatcher("/views/login.jsp").forward(request, response);
-            }
-        } else {
-            response.sendRedirect("/");
-        }
+        request.setAttribute("online", false);
+        request.getRequestDispatcher("/views/login.jsp").forward(request, response);
+
     }
 }

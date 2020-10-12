@@ -19,3 +19,43 @@ CREATE TABLE posts (
 );
 
 
+
+
+
+SELECT CASE WHEN fr.id is null THEN -1 ELSE fr.id END as friend_id,
+       u.id as sender_id, u.email, u.full_name, u.birth_date, u.picture_url
+FROM  users u  LEFT JOIN friends_requests fr on u.id = fr.user_id
+WHERE (full_name ~* 'b' or fr.request_sender_id = 5) and u.id != 5
+ORDER BY full_name ASC;
+
+SELECT u.id, u.email, u.full_name, u.birth_date, u.picture_url
+                    FROM users u INNER JOIN friends_requests fr on u.id = fr.request_sender_id
+                WHERE fr.user_id = 5;
+
+select * from friends_requests;
+select * from friends;
+DELETE FROM friends_requests where user_id = 171 and request_sender_id = 5;
+select * from users;
+
+INSERT INTO friends_requests(user_id, request_sender_id) values(5, 177), (5, 178), (5, 179), (5, 180), (5, 181);
+
+INSERT INTO friends(user_id, friend_id) values(?, ?);
+
+
+INSERT INTO friends(user_id, friend_id) values
+                                               (DELETE FROM friends_requests
+                                                   where user_id = ? and request_sender_id = ?
+                                                   RETURNING request_sender_id, user_id)
+                                                   ON CONFLICT DO NOTHING ;
+
+DELETE FROM friends_requests
+where user_id = ? and request_sender_id = ?
+RETURNING request_sender_id, user_id;
+
+SELECT u.id, u.email, u.full_name, u.birth_date, u.picture_url
+                    FROM users u INNER JOIN friends fr on u.id = fr.friend_id
+                WHERE fr.user_id = 5;
+
+
+
+
