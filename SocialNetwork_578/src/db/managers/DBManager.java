@@ -768,7 +768,7 @@ public class DBManager {
             statement.setLong(1,user_id);
             statement.setLong(2,user_id);
             statement.setLong(3,user_id);
-
+            System.out.println(statement.toString());
             ResultSet resultset = statement.executeQuery();
 
             while (resultset.next()) {

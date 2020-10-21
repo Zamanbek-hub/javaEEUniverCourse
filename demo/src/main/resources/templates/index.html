@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/b8d631eee1.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg" style="background-color: #60AB9C; color:white;">
+        <a class="navbar-brand" href="/" style="color:white;">Task Manager</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/" style="color:white;">All tasks <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <form class="container-fluid " action="/" method="GET">
+            <div class="row">
+                <div class="form-group col-3">
+                    <label for="name">Name:</label>
+                    <input type="text" class="form-control" id="name" name="task_name"  placeholder="Type Name">
+                </div>
+                <div class="form-group col-3">
+                    <label for="deadline_from">Deadline From:</label>
+                    <input type="date" class="form-control" id="deadline_from" name="deadline_from">
+                </div>
+                <div class="form-group col-3">
+                    <label for="deadline_to">Deadline To:</label>
+                    <input type="date" class="form-control" id="deadline_to" name="deadline_to">
+                </div>
+                <div class="form-group col-2">
+                    <label for="task_completed">Is Grant:</label>
+                    <select class="form-control" id="task_completed" name="task_completed">
+                        <option selected value="True">yes</option>
+                        <option value="False">no</option>
+                    </select>
+                </div>
+                <div class="form-group col-1">
+                    <button type="submit" class="btn"  style="background-color: #AA3FFC; float:right; color:white; margin-top: 30px;">Filter</button>
+                </div>
+            </div>
+
+        </form>
+
+        <br/>
+
+        <button class="btn" style="background-color: #60AB9C; color: white;" data-toggle="modal" data-target="#addModal">
+            <i class="fas fa-plus-square"></i>
+            Add New
+        </button>
+
+        <hr/>
+    </div>
+
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-12">
+                <table class="table table-stripped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+    <!--                        <th>Description</th>-->
+                            <th>Date</th>
+                            <th>Is Completed</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each = "task : ${tasks}">
+                        <td th:text = "${task.getId()}"></td>
+                        <td th:text = "${task.getName()}"></td>
+    <!--                    <td th:text = "${task.getDescription()}"></td>-->
+                        <td th:text = "${task.getDeadlineDate()}"></td>
+                        <td th:text = "${task.isCompleted()}"></td>
+                        <td><a th:href="@{'/details/' + ${task.id}}" class="btn btn-info btn-sm">Details</a></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="POST" action="/add_task">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add New Post</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="task_name">Title:</label>
+                            <input type="text" class="form-control" id="task_name" name="task_name" placeholder="Name of title...">
+                        </div>
+                        <div class="form-group">
+                            <label for="task_description">Short Content:</label>
+                            <textarea type="text" class="form-control" id="task_description" name="task_description"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="task_deadline">Content:</label>
+                            <input type="date" class="form-control" id="task_deadline" name="task_deadline">
+                        </div>
+                        <div class="form-group">
+                            <label for="task_complete">Content:</label>
+                            <select class="form-control" id="task_complete" name="task_completed">
+                                <option value="True">Yes</option>
+                                <option value="False">No</option>
+                            </select>
+                        </div>
+
+                        <input type="hidden" value="<%=user.getId()%>" id="user_id" name="user_id">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" >ADD</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+</html>
