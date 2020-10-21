@@ -39,10 +39,10 @@
                     <input type="date" class="form-control" id="deadline_to" name="deadline_to">
                 </div>
                 <div class="form-group col-2">
-                    <label for="task_completed">Is Grant:</label>
+                    <label for="task_completed">IS COMPLETED:</label>
                     <select class="form-control" id="task_completed" name="task_completed">
-                        <option selected value="True">yes</option>
-                        <option value="False">no</option>
+                        <option value="True" th:selected="${task_completed}">Yes</option>
+                        <option value="False" th:selected="${! task_completed}">NO</option>
                     </select>
                 </div>
                 <div class="form-group col-1">

@@ -21,13 +21,14 @@ public class HomeController {
                         @RequestParam(name="deadline_from", defaultValue = "1000-10-10", required = false) Date date_from,
                         @RequestParam(name="deadline_to", defaultValue = "2021-10-10", required = false) Date date_to,
                         @RequestParam(name="task_completed", defaultValue = "false", required = false) boolean complete){
-        ArrayList<Task> tasks = DBManager.getAllTasks();
 
-        System.out.println(false + "compare with " + complete + " = " + Boolean.compare(false,complete) );
+        ArrayList<Task> tasks = DBManager.getAllTasks();
+        ArrayList<Task> tasks2 = new ArrayList<>();
+
         for(Task task: tasks){
             if(task.getDeadlineDate().compareTo(date_from) >= 0 && task.getDeadlineDate().compareTo(date_to) <= 0 && Boolean.compare(task.isCompleted(),complete) == 0) {
                 System.out.println(task.getId() + ": " + task.isCompleted() + "compare with " + complete + " = " + Boolean.compare(false, complete));
-                tasks.remove(task);
+                tasks2.add(task);
             }
         }
 
@@ -35,13 +36,11 @@ public class HomeController {
 
 
 
-        if(! name.equals("")) {
-            tasks.removeIf(task -> task.getName().contains(name));
-            System.out.println("I am here");
-        }
+        if(! name.equals(""))
+            tasks2.removeIf(task -> ! task.getName().contains(name));
 
-
-        model.addAttribute("tasks", tasks);
+        model.addAttribute("tasks", tasks2);
+        model.addAttribute("task_completed", complete);
         return "index";
     }
 
