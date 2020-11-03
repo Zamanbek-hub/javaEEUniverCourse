@@ -3,7 +3,13 @@
     height: 500px;
 }
 
-.list-group > li > a > span {
+.list-group > li > a {
     font-weight: bold;
+    color: black;
+}
 
+.list-group-item.active{
+    font-weight: bold;
+    font-size: 20px;
+    color: white !important;
 }

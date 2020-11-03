@@ -1,0 +1,86 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" layout:decorator = "layout/main.html">
+<div layout:fragment = "site_content">
+
+    <div class="row mt-5 offset-3">
+        <div class="card mt-3 col-8"  style="width: 100%; height: auto;" >
+            <img class="card-img-top" style="width:100%; height: 300px;" th:src="${item.getPictureUrl()}" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title" th:text="${item.getName()}" style="color:#6DD2F7;"></h5>
+                <h5 class="card-title" th:text="${item.getPrice()}"></h5>
+                <p class="card-text" th:text="${item.getDescription()}"></p>
+                <div th:each="i : ${#numbers.sequence(0, 5)}" style="display: inline-block;">
+                    <i th:if="${i < item.getStars()}" class="far fa-star" style="color: yellow"></i>
+                    <i th:if="${i > item.getStars()}" class="far fa-star"></i>
+                </div>
+
+
+                <form th:action="@{/delete_item}" method="POST" class="form-group mt-3 float-right">
+                    <input type="hidden" name="id" th:value="${item.getId()}">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#updateModal">Update</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="POST" action="/update_item">
+                    <input type="hidden" name="id" th:value="${item.getId()}">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="updateModalLabelLabel">Update item</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="add_name">Name:</label>
+                            <input type="text" class="form-control" id="add_name" name="add_name" th:value="${item.getName()}" placeholder="Name of title...">
+                        </div>
+                        <div class="form-group">
+                            <label for="add_description">Description:</label>
+                            <input type="text" class="form-control" id="add_description" name="add_description" th:value="${item.getDescription()}">
+                        </div>
+                        <div class="form-group">
+                            <label for="add_type">Type:</label>
+                            <select class="form-control" id="add_type" name="add_type">
+                                <option value="laptop">Laptop</option>
+                                <option value="phone">Phone</option>
+                                <option value="watch">Watch</option>
+                                <option value="tv">TV</option>
+                                <option value="console">Console</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="add_price">Price:</label>
+                            <input type="number" class="form-control" id="add_price" name="add_price" th:value="${item.getPrice()}">
+                        </div>
+                        <div class="form-group">
+                            <label for="add_amount">Amount:</label>
+                            <input type="number" class="form-control" id="add_amount" name="add_amount" th:value="${item.getAmount()}">
+                        </div>
+                        <div class="form-group">
+                            <label for="add_stars">Stars:</label>
+                            <input type="number" class="form-control" id="add_stars" name="add_stars" th:value="${item.getStars()}">
+                        </div>
+                        <div class="form-group">
+                            <label for="add_picture_url">Picture Url:</label>
+                            <input type="text" class="form-control" id="add_picture_url" name="add_picture_url" th:value="${item.getPictureUrl()}">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" >ADD</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+</html>

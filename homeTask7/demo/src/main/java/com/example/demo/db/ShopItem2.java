@@ -9,7 +9,7 @@ import java.util.ArrayList;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShopItem {
+public class ShopItem2 {
     private Long id;
     private String name;
     private String description;
@@ -20,7 +20,7 @@ public class ShopItem {
     private ArrayList<Boolean> startArr;
     private  String pictureUrl;
 
-    public ShopItem(Long id, String name, String description, String type, int price, int amount, int stars, String pictureUrl) {
+    public ShopItem2(Long id, String name, String description, String type, int price, int amount, int stars, String pictureUrl) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -31,7 +31,7 @@ public class ShopItem {
         this.pictureUrl = pictureUrl;
     }
 
-    public ShopItem(String name, String description, String type, int price, int amount, int stars, String pictureUrl) {
+    public ShopItem2(String name, String description, String type, int price, int amount, int stars, String pictureUrl) {
         this.id = id;
         this.name = name;
         this.description = description;

@@ -1,19 +1,17 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" layout:decorator = "layout/main.html">
     <div layout:fragment = "site_content">
-        <div class="mt-5" style="width: 100%;">
-            <button class="btn btn-success" style="float:right"  th:text="#{button.add}" data-toggle="modal" data-target="#addModal"></button>
-        </div>
 
         <div class="row mt-5">
             <div class="col-3">
                 <ul class="list-group">
-                    <li class="list-group-item"><a href="/?type=all"><span th:text="#{category.all}"></span>  <i class="fas fa-shopping-basket"></i></a></li>
-                    <li class="list-group-item"><a href="/?type=laptop"><span th:text="#{category.laptops}"></span> <i class="fas fa-laptop"></i></a></li>
-                    <li class="list-group-item"><a href="/?type=phone"><span th:text="#{category.phones}"></span> <i class="fas fa-mobile"></i></a></li>
-                    <li class="list-group-item"><a href="/?type=watch"><span th:text="#{category.watches}"></span> <i class="fas fa-clock"></i></a></li>
-                    <li class="list-group-item"><a href="/?type=tv"><span th:text="#{category.tv}"></span> <i class="fas fa-tv"></i></a></li>
-                    <li class="list-group-item"><a href="/?type=console"><span th:text="#{category.console}"></span> <i class="fab fa-xbox"></i></a></li>
-                    <li class="list-group-item"><a href="/?type=all"><span th:text="#{category.other}"></span> <i class="fas fa-folder-plus"></i></a></li>
+                    <li class="list-group-item active"W><a href="/"><span>Categories</span></a></li>
+                    <li class="list-group-item"><a href="/?type=all"><i class="fas fa-shopping-basket"></i> <span th:text="#{category.all}"></span></a></li>
+                    <li class="list-group-item"><a href="/?type=laptop"><i class="fas fa-laptop"></i> <span th:text="#{category.laptops}"></span></a></li>
+                    <li class="list-group-item"><a href="/?type=phone"><i class="fas fa-mobile"></i> <span th:text="#{category.phones}"></span></a></li>
+                    <li class="list-group-item"><a href="/?type=watch"><i class="fas fa-clock"></i> <span th:text="#{category.watches}"></span></a></li>
+                    <li class="list-group-item"><a href="/?type=tv"><i class="fas fa-tv"></i> <span th:text="#{category.tv}"></span></a></li>
+                    <li class="list-group-item"><a href="/?type=console"><i class="fab fa-xbox"></i> <span th:text="#{category.console}"></span></a></li>
+                    <li class="list-group-item"><a href="/?type=all"><i class="fas fa-folder-plus"></i> <span th:text="#{category.other}"></span></a></li>
                 </ul>
             </div>
 
@@ -53,9 +51,9 @@
                                 <h5 class="card-title" th:text="${item.getName()}" style="color:#6DD2F7;"></h5>
                                 <h5 class="card-title" th:text="${item.getPrice()}"></h5>
                                 <p class="card-text" th:text="${item.getDescription()}"></p>
-                                <div th:each="star : ${item.getStartArr()}" style="display: inline-block;">
-                                    <i th:if="${star}" class="far fa-star" style="color: yellow"></i>
-                                    <i th:if="! ${star}" class="far fa-star"></i>
+                                <div th:each="i : ${#numbers.sequence(0, 5)}" style="display: inline-block;">
+                                    <i th:if="${i < item.getStars()}" class="far fa-star" style="color: yellow"></i>
+                                    <i th:if="${i > item.getStars()}" class="far fa-star"></i>
                                 </div>
                             </div>
                         </div>
@@ -64,60 +62,5 @@
             </div>
         </div>
 
-        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form method="POST" action="/add_item">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="addLeagueModalLabel">Add New Post</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="add_name">Name:</label>
-                                <input type="text" class="form-control" id="add_name" name="add_name" placeholder="Name of title...">
-                            </div>
-                            <div class="form-group">
-                                <label for="add_description">Description:</label>
-                                <input type="text" class="form-control" id="add_description" name="add_description">
-                            </div>
-                            <div class="form-group">
-                                <label for="add_type">Type:</label>
-                                <select class="form-control" id="add_type" name="add_type">
-                                    <option value="laptop">Laptop</option>
-                                    <option value="phone">Phone</option>
-                                    <option value="watch">Watch</option>
-                                    <option value="tv">TV</option>
-                                    <option value="console">Console</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="add_price">Price:</label>
-                                <input type="number" class="form-control" id="add_price" name="add_price">
-                            </div>
-                            <div class="form-group">
-                                <label for="add_amount">Amount:</label>
-                                <input type="number" class="form-control" id="add_amount" name="add_amount">
-                            </div>
-                            <div class="form-group">
-                                <label for="add_stars">Stars:</label>
-                                <input type="number" class="form-control" id="add_stars" name="add_stars" >
-                            </div>
-                            <div class="form-group">
-                                <label for="add_picture_url">Picture Url:</label>
-                                <input type="text" class="form-control" id="add_picture_url" name="add_picture_url">
-                            </div>
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-success" >ADD</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
     </div>
 </html>
