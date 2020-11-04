@@ -11,5 +11,9 @@
 .list-group-item.active{
     font-weight: bold;
     font-size: 20px;
+    background-color: #1F6F44;
+}
+
+.list-group-item.active > a{
     color: white !important;
 }

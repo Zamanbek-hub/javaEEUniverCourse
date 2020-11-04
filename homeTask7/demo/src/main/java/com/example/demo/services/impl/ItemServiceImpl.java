@@ -54,4 +54,25 @@ public class ItemServiceImpl implements ItemService {
     public List<ShopItem> findDistinctByType(String type) {
         return shopItemRepository.findDistinctByType(type);
     }
+
+
+    @Override
+    public List<ShopItem> findAllByNameContainsOrderByPriceAsc(String name) {
+        return shopItemRepository.findAllByNameContainsOrderByPriceAsc(name);
+    }
+
+    @Override
+    public List<ShopItem> findAllByNameContainsOrderByPriceDesc(String name) {
+        return shopItemRepository.findAllByNameContainsOrderByPriceDesc(name);
+    }
+
+    @Override
+    public List<ShopItem> findAllByNameContainsAndPriceBetweenOrderByPriceAsc(String name,int price1, int price2) {
+        return shopItemRepository.findAllByNameContainsAndPriceBetweenOrderByPriceAsc(name, price1, price2);
+    }
+
+    @Override
+    public List<ShopItem> findAllByNameContainsAndPriceBetweenOrderByPriceDesc(String name,int price1, int price2) {
+        return shopItemRepository.findAllByNameContainsAndPriceBetweenOrderByPriceDesc(name, price1, price2);
+    }
 }
