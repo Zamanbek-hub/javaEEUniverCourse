@@ -5,6 +5,7 @@ import com.example.demo.entities.Category;
 import com.example.demo.entities.Item;
 import com.example.demo.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ public class ItemController {
 
 
     @GetMapping(value = "/admin/items")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
     public String adminItems(Model model){
         List<Item> items = itemService.getAllItems();
         model.addAttribute("items", items);
@@ -31,6 +33,7 @@ public class ItemController {
 
 
     @GetMapping(value = "/admin/items/detail/{id}")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
     public String adminItemDetail(Model model, @PathVariable Long id){
         Item item = itemService.getItem(id);
         System.out.println("Item id = "  + item.getId());
@@ -49,6 +52,7 @@ public class ItemController {
     }
 
     @GetMapping(value="/admin/items/add")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
     public String addItemPage(Model model){
         List<Brand> brands = itemService.getAllBrands();
         List<Category> categories = itemService.getAllCategories();
@@ -59,6 +63,7 @@ public class ItemController {
     }
 
     @PostMapping(value="/admin/items/add")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
     public String addItem(@RequestParam(name = "add_name", defaultValue = "No Name") String name,
                           @RequestParam(name="add_description", defaultValue = "No Description") String description,
                           @RequestParam(name="add_type", defaultValue = "")  String type,
@@ -80,6 +85,7 @@ public class ItemController {
     }
 
     @PostMapping(value="/admin/items/update")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
     public String updateItem(@RequestParam(name = "id", defaultValue = "-1") Long id,
                              @RequestParam(name = "update_name", defaultValue = "No Name") String name,
                              @RequestParam(name="update_description", defaultValue = "No Description") String description,
@@ -101,6 +107,7 @@ public class ItemController {
 
 
     @PostMapping(value="/admin/items/delete")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
     public String deleteItem(@RequestParam(name = "id", defaultValue = "-1") Long id){
         if(itemService.existsItemByIdEquals(id)) {
             itemService.deleteItem(id);
@@ -111,6 +118,7 @@ public class ItemController {
 
 
     @PostMapping(value="/admin/items/assignCategory")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
     public String assignCategory(@RequestParam(name = "item_id", defaultValue = "-1") Long item_id,
                              @RequestParam(name = "category_id", defaultValue = "-1") Long category_id){
 
@@ -139,6 +147,7 @@ public class ItemController {
 
 
     @PostMapping(value="/admin/items/revokeCategory")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
     public String revokeCategory(@RequestParam(name = "item_id", defaultValue = "-1") Long item_id,
                              @RequestParam(name = "category_id", defaultValue = "-1") Long category_id){
 

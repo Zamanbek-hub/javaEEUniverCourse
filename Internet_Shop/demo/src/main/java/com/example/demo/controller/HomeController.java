@@ -1,12 +1,18 @@
 package com.example.demo.controller;
 
-import com.example.demo.entities.Brand;
-import com.example.demo.entities.Category;
-import com.example.demo.entities.Country;
-import com.example.demo.entities.Item;
+import com.example.demo.entities.*;
+import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.BrandService;
 import com.example.demo.services.ItemService;
+import com.example.demo.services.RoleService;
+import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +20,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Controller(value = "/")
@@ -22,8 +30,17 @@ public class HomeController {
     @Autowired
     private ItemService itemService;
 
+//    @Autowired
+//    private BrandService brandService;
+
     @Autowired
-    private BrandService brandService;
+    private UserService userService;
+
+//    @Autowired
+//    private UserRepository userRepository;
+
+//    @Autowired
+//    private RoleService roleService;
 
     @GetMapping(value = "/")
     public String index(Model model, @RequestParam(name = "category_id", defaultValue = "-1", required = false) Long category_id){
@@ -36,7 +53,7 @@ public class HomeController {
         else
             items = itemService.getAllItems();
 
-
+        model.addAttribute("currentUser", getUserData());
         model.addAttribute("items", items);
         model.addAttribute("categories", itemService.getAllCategories());
         model.addAttribute("brands", itemService.getAllBrands());
@@ -130,22 +147,79 @@ public class HomeController {
         return "error";
     }
 
-//    @GetMapping(value = "/itemAdmin")
-//    public String itemDetailAdmin(Model model, @RequestParam(name = "id", defaultValue = "1", required = true) Long id){
-//        Item item = itemService.getItem(id);
-//        if(item != null) {
-//            List<Brand> brands = itemService.getAllBrands();
-//            model.addAttribute("brands", brands);
-//            model.addAttribute("item", item);
-//            return "user/itemDetailAdmin";
+
+    @GetMapping(value = "/403")
+    public String accessDenied(Model model){
+        return "403";
+    }
+
+
+    @GetMapping(value = "/login")
+    public String login(Model model,
+                        @RequestParam(name = "error", defaultValue = "1", required = false) String error,
+                        @RequestParam(name = "email", defaultValue = "", required = false) String email){
+        model.addAttribute("email", email);
+        return "login";
+    }
+
+
+    @GetMapping(value = "/register")
+    public String register(Model model, @RequestParam(name = "error", required = false) String error){
+        model.addAttribute("currentUser", getUserData());
+        return "register";
+    }
+
+
+    @PostMapping(value = "/register")
+    public String toRegister(@RequestParam(name = "email") String email,
+                             @RequestParam(name = "password") String password,
+                             @RequestParam(name = "retype_password") String re_password,
+                             @RequestParam(name = "full_name") String full_name){
+
+        if(password.equals(re_password)){
+            Users user = new Users(email, password, full_name);
+            if(userService.createUser(user) != null){
+                return "redirect:/login?email="+email;
+
+            }
+        }
+        return "redirect:/register?error";
+    }
+
+
+    @GetMapping(value="/profile")
+    @PreAuthorize("isAuthenticated()")
+    public String profile(Model model){
+        model.addAttribute("currentUser", getUserData());
+        System.out.println("User = " + getUserData());
+        return "user/profile";
+    }
+
+
+//    public boolean saveUser(Users user) {
+//        Users myUser = getUserData();
+//
+//        if (myUser != null) {
+//            return false;
 //        }
 //
-//        return "error";
+////        user.setRoles(Collections.singleton(roleService.getRolesByName("ROLE_USER")));
+//
+//        userRepository.save(user);
+//        return true;
 //    }
 
 
+    private Users getUserData(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(!(authentication instanceof AnonymousAuthenticationToken)){
+            User secUser = (User)authentication.getPrincipal();
+            Users myUser = userService.getUserByEmail(secUser.getUsername());
+            return myUser;
+        }
 
-
+        return null;
+    }
 
 
 

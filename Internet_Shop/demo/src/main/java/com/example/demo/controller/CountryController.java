@@ -7,6 +7,7 @@ import com.example.demo.entities.Item;
 import com.example.demo.services.BrandService;
 import com.example.demo.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ public class CountryController {
     private BrandService brandService;
 
     @GetMapping(value = "/admin/countries")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
     public String adminCountries(Model model){
         List<Country> countries = brandService.getAllCountries();
         model.addAttribute("countries", countries);
@@ -30,6 +32,7 @@ public class CountryController {
     }
 
     @PostMapping(value = "/admin/countries/save")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
     public String saveCountry(@RequestParam(name = "add_name", defaultValue = "No Name") String name,
                                @RequestParam(name="add_code", defaultValue = "") String code){
 
@@ -41,6 +44,7 @@ public class CountryController {
 
 
     @PostMapping(value = "/admin/countries/update")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
     public String updateCountry(@RequestParam(name = "update_id", defaultValue = "-1") Long id,
                                  @RequestParam(name = "update_name", defaultValue = "No Name") String name,
                                  @RequestParam(name="update_code", defaultValue = "") String code){

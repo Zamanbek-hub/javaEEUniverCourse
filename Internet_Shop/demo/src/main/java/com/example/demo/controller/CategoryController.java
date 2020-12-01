@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.entities.Category;
 import com.example.demo.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ public class CategoryController {
     private ItemService itemService;
 
     @GetMapping(value = "/admin/categories")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
     public String adminCategories(Model model){
         List<Category> categories = itemService.getAllCategories();
         model.addAttribute("categories", categories);
@@ -25,6 +27,7 @@ public class CategoryController {
     }
 
     @PostMapping(value = "/admin/categories/save")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
     public String saveCategory(@RequestParam(name = "add_name", defaultValue = "No Name") String name,
                                @RequestParam(name="add_logoURL", defaultValue = "") String logoURL){
 
@@ -36,6 +39,7 @@ public class CategoryController {
 
 
     @PostMapping(value = "/admin/categories/update")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
     public String updateCategory(@RequestParam(name = "update_id", defaultValue = "-1") Long id,
                                  @RequestParam(name = "update_name", defaultValue = "No Name") String name,
                                  @RequestParam(name="update_logoURL", defaultValue = "") String logoURL){
