@@ -3,7 +3,20 @@
 
     <div class="row mt-5">
         <div class="col-6 offset-3">
-            <form th:action="@{/user/update_profile}" method="POST">
+            <img th:src="${currentUser.pictureURL}" style="width: 90%; height: 350px">
+            <form th:action="@{/user/update_picture}" method="POST" id="" class="mt-5 mb-5">
+                <input type="hidden" name="old_email" th:value="${currentUser.email}">
+                <div class="form-group">
+                    <input type="text" th:value="${currentUser.pictureURL}" name="pictureURL" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-success float-right">Update Picture</button>
+                </div>
+            </form>
+
+
+
+            <form th:action="@{/user/update_profile}" method="POST" class="mt-5 mb-5">
                 <div class="form-group">
                     <label th:text="#{label.email}"></label>
                     <input type="email" th:value="${currentUser.email}" name="email" class="form-control" required>
@@ -18,7 +31,7 @@
             </form>
 
 
-            <form class="mt-5" th:action="@{/user/update_password}" method="POST">
+            <form th:action="@{/user/update_password}" method="POST" class="mt-5 mb-5">
                 <div class="form-group">
                     <label th:text="#{profile.old_password}"></label>
                     <input type="password" name="old_password" class="form-control" required>

@@ -26,6 +26,21 @@ public class UsersController {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @PostMapping(value = "/user/update_picture")
+    public String update_profile(@RequestParam(name = "pictureURL", defaultValue = "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png") String pictureURL){
+
+
+        Users user = getUserData();
+        assert user != null;
+        String old_email = user.getEmail();
+        user.setPictureURL(pictureURL);
+        if(userService.updateUserProfile(user, old_email) != null){
+            return "redirect:/profile?success";
+        }
+
+        return "redirect:/profile?error";
+    }
+
     @PostMapping(value = "/user/update_profile")
     public String update_profile(@RequestParam(name = "email") String email,
                              @RequestParam(name = "full_name") String full_name){

@@ -19,6 +19,13 @@ public class Users {
         this.fullname = fullname;
     }
 
+    public Users(String email, String password, String fullname, String pictureURL) {
+        this.email = email;
+        this.password = password;
+        this.fullname = fullname;
+        this.pictureURL = pictureURL;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id")
@@ -33,6 +40,12 @@ public class Users {
     @Column(name="fullname", length=500)
     private String fullname;
 
+    @Column(name="pictureURL", length=500)
+    private String pictureURL;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Roles> roles;
+
+
+
 }

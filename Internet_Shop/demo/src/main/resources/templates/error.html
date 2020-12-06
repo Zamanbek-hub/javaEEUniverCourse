@@ -1,10 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h1>Please don't hack</h1>
-</body>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" layout:decorator = "layout/user/main.html">
+<div layout:fragment = "site_content">
+
+    <div class="row mt-5">
+        <div class="col-6 offset-3">
+            <h1>Please don't hack</h1>
+        </div>
+    </div>
+
+</div>
 </html>
+
+
+

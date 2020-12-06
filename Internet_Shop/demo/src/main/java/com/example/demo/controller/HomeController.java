@@ -177,7 +177,8 @@ public class HomeController {
                              @RequestParam(name = "full_name") String full_name){
 
         if(password.equals(re_password)){
-            Users user = new Users(email, password, full_name);
+            String defaultAva = "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png";
+            Users user = new Users(email, password, full_name, defaultAva);
             if(userService.createUser(user) != null){
                 return "redirect:/login?email="+email;
 

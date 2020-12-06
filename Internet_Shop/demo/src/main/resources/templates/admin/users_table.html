@@ -5,6 +5,8 @@
         <button class="btn btn-dark" data-toggle="modal" data-target="#addModal" style="float: right;">+Add new</button>
     </div>
 
+
+
     <hr>
 
     <div class="card-body">
@@ -18,16 +20,24 @@
                         </button>
                     </div>
 
-                    <form th:action="@{/admin/countries/save}" method="POST">
+                    <form th:action="@{/admin/users/create}" method="POST">
                         <div class="modal-body">
                             <div class="container">
                                 <div class="form-group">
-                                    <label for="add_name">Name</label>
-                                    <input type="text" class="form-control" name="add_name" id="add_name">
+                                    <label for="email" th:text="#{register.email}"></label>
+                                    <input type="email" name="email" class="form-control" id="email" required placeholder="Email">
                                 </div>
                                 <div class="form-group">
-                                    <label for="add_code">Code</label>
-                                    <input type="text" class="form-control" name="add_code" id="add_code">
+                                    <label for="password" th:text="#{register.password}"></label>
+                                    <input type="password" name="password" class="form-control" id="password" required placeholder="Password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="retype_password" th:text="#{register.retype_password}"></label>
+                                    <input type="password" name="retype_password" class="form-control" id="retype_password" required placeholder="Retype Password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="full_name" th:text="#{register.full_name}"></label>
+                                    <input type="text" name="full_name" class="form-control" id="full_name" required placeholder="Retype Password">
                                 </div>
                             </div>
                         </div>
@@ -43,10 +53,12 @@
             </div>
         </div>
 
+
         <table class="table">
             <thead>
             <tr>
                 <th scope="col">ID</th>
+                <th scope="col">Email</th>
                 <th scope="col">Full Name</th>
                 <th scope="col">Roles</th>
                 <th scope="col">Details</th>
@@ -56,12 +68,13 @@
 
             <tr th:each="u : ${users}">
                 <th scope="row" th:text="${u.id}"></th>
+                <td th:text="${u.email}"></td>
                 <td th:text="${u.fullname}"></td>
                 <td>
                     <span th:each="r : ${u.roles}" th:text="${r.name + ', '}"></span>
                 </td>
                 <td>
-                    <a th:href="@{'admin/users/profile?email=' + ${u.email}}">
+                    <a th:href="@{'users/profile?email=' + ${u.email}}">
                         <button type="button" class="btn btn-dark">
                             <i class="fas fa-edit"></i>
                         </button>

@@ -8,6 +8,10 @@ import com.example.demo.services.RoleService;
 import com.example.demo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,25 +31,54 @@ public class AdminUsersController {
     private RoleService roleService;
 
     @GetMapping(value = "/admin/users")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public String adminCategories(Model model){
+        Users currentUser = getUserData();
         List<Users> users = userService.getAllUsers();
+
+        Roles role = roleService.getRolesByName("ROLE_ADMIN");
+        users.removeIf(user -> user.getRoles().contains(role));
+
+        model.addAttribute("currentUser", currentUser);
         model.addAttribute("users", users);
         return "admin/users_table";
     }
 
 
     @GetMapping(value="/admin/users/profile")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public String profile(Model model, @RequestParam(name = "email") String email){
-        model.addAttribute("user", userService.getUserByEmail(email));
+        Users currentUser = getUserData();
+        Users user = userService.getUserByEmail(email);
+        List<Roles> roles = roleService.getAllRoles();
+        roles.removeAll(user.getRoles());
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("user", user);
+        model.addAttribute("roles", roles);
         return "admin/userDetailAdmin";
     }
 
 
+    @PostMapping(value = "/admin/users/create")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public String createUsers(@RequestParam(name = "email") String email,
+                              @RequestParam(name = "password") String password,
+                              @RequestParam(name = "retype_password") String re_password,
+                              @RequestParam(name = "full_name") String full_name){
+
+        if(password.equals(re_password)){
+            Users user = new Users(email, password, full_name);
+            if(userService.createUser(user) != null){
+                return "redirect:/admin/users?success";
+
+            }
+        }
+        return "redirect:/admin/users?error";
+    }
+
     @PostMapping(value = "/admin/users/update")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
-    public String updateRole(@RequestParam(name = "old_email") String old_email,
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    public String updateUsers(@RequestParam(name = "old_email") String old_email,
                                  @RequestParam(name = "email") String email,
                                  @RequestParam(name="full_name") String full_name){
         Users user = userService.getUserByEmail(old_email);
@@ -54,7 +87,7 @@ public class AdminUsersController {
             user.setFullname(full_name);
 
             userService.updateUserProfile(user, old_email);
-            return "redirect:/admin/users";
+            return "redirect:/admin/users/profile?email="+user.getEmail();
         }
 
         return "error";
@@ -62,12 +95,12 @@ public class AdminUsersController {
 
 
     @PostMapping(value="/admin/users/delete")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public String deleteUser(@RequestParam(name = "email") String email){
         Users user = userService.getUserByEmail(email);
         if(user != null) {
             userService.deleteUser(user);
-            return "redirect:/admin/items";
+            return "redirect:/admin/users";
         }
         return "error";
     }
@@ -75,7 +108,7 @@ public class AdminUsersController {
 
 
     @PostMapping(value="/admin/users/assignRole")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public String assignRole(@RequestParam(name = "email") String email,
                                  @RequestParam(name = "role_id") Long role_id){
 
@@ -103,7 +136,7 @@ public class AdminUsersController {
     }
 
     @PostMapping(value="/admin/users/revokeRole")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public String revokeRole(@RequestParam(name = "email") String email,
                                  @RequestParam(name = "role_id") Long role_id){
 
@@ -124,5 +157,17 @@ public class AdminUsersController {
         }
 
         return "error";
+    }
+
+
+    private Users getUserData(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(!(authentication instanceof AnonymousAuthenticationToken)){
+            User secUser = (User)authentication.getPrincipal();
+            Users myUser = userService.getUserByEmail(secUser.getUsername());
+            return myUser;
+        }
+
+        return null;
     }
 }
