@@ -2,11 +2,20 @@ package com.example.demo.services;
 
 import com.example.demo.entities.Brand;
 import com.example.demo.entities.Category;
+import com.example.demo.entities.Comment;
 import com.example.demo.entities.Item;
 
 import java.util.List;
 
 public interface ItemService {
+    List<Item> findItemsById(List<Long> ids);
+
+    Comment addComment(Comment comment);
+    List<Comment> getAllCommentsByItem(Item item);
+    Comment getComment(Long id);
+    void deleteComment(Long id);
+    Comment saveComment(Comment comment);
+
     Item addItem(Item item);
     List<Item> getAllItems();
     Item getItem(Long id);
@@ -17,6 +26,9 @@ public interface ItemService {
     Brand addBrand(Brand brand);
     Brand saveBrand(Brand country);
     Brand getBrand(Long id);
+
+
+
 
 
 
@@ -41,4 +53,7 @@ public interface ItemService {
 
     List<Item> findAllByCategoriesContains(Category cat);
     List<Item> findAllByNameContains(String name);
+
+
+
 }

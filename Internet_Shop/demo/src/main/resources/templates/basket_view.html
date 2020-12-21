@@ -1,0 +1,159 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://ultraq.net.nz/thymeleaf/layout" layout:decorator = "layout/user/main.html">
+<div layout:fragment = "site_content">
+
+    <div class="row mt-5">
+        <div class="col-3">
+            <ul class="list-group">
+                <li class="list-group-item active"><a href="/"><span>Categories</span></a></li>
+                <li class="list-group-item"><a href="/"><i class="fas fa-shopping-basket"></i> <span>All Products</span></a></li>
+                <li class="list-group-item" th:each="cat : ${categories}" ><a th:href="@{/search(category=${cat.id})}"><span th:text="${cat.name}"></span></a></li>
+            </ul>
+
+            <ul class="list-group mt-3">
+                <li class="list-group-item active"><a href="/"><span>Brands</span></a></li>
+                <li class="list-group-item" th:each="br : ${brands}"><a th:href="@{/search(brand_id=${br.id})}"><span th:text="${br.name}"></span></a></li>
+            </ul>
+
+
+            <ul class="list-group mt-3">
+                <li class="list-group-item active"><a href="/"><span>Payments</span></a></li>
+            </ul>
+            <div class="row mt-3 mb-5" style="font-size: 30px">
+                <div class="col-4">
+                    <i class="fab fa-cc-apple-pay"></i>
+                </div>
+                <div class="col-4">
+                    <i class="fab fa-cc-visa"></i>
+                </div>
+                <div class="col-4">
+                    <i class="fab fa-cc-paypal"></i>
+                </div>
+
+                <div class="col-4">
+                    <i class="fab fa-cc-amazon-pay"></i>
+                </div>
+                <div class="col-4">
+                    <i class="fab fa-cc-mastercard"></i>
+                </div>
+                <div class="col-4">
+                    <i class="fab fa-cc-amex"></i>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-9">
+            <form th:action="@{/search}" method="GET" class="form-inline col-12 mb-5">
+                <input class="form-control w-75 mr-3" type="search" name="name" placeholder="Search" aria-label="Search">
+                <button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+
+            <div class="card mt-3 col-10"  style="width: 100%; height: auto;" >
+                <div class="card-top">
+                    <h2>Basket</h2>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Item</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Amount</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr th:each="ib : ${itemBackets}">
+                            <td th:text="${ib.key.name}"></td>
+                            <td th:text="${ib.key.price}"></td>
+                            <td th:text="${ib.value}"></td>
+                            <td>
+                                <div class="row">
+                                    <form method="post" th:action="@{'/basket/item_plus'}">
+                                        <input type="hidden" name="item_id" th:value="${ib.key.id}">
+                                        <button type="submit" class="btn btn-success" style="margin-right: 5px;"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                    </form>
+                                    <form method="post" th:action="@{'/basket/item_minus'}">
+                                        <input type="hidden" name="item_id" th:value="${ib.key.id}">
+                                        <button type="submit" class="btn btn-secondary"><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="row">
+                        <div class="col-8">
+                            <span>Total : </span>
+                            <h3  th:text="${totalPrice}"></h3>
+                        </div>
+                        <div class="col-2">
+                            <button type="button" class="btn btn-dark input-block-level form-control" data-toggle="modal" data-target="#orderInModal">
+                                <i class="far fa-credit-card"></i> <span th:text="#{basket.order}" style="font-size: 10px;"></span>
+                            </button>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="orderInModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="orderInModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="orderInModalLabel">Order Basket</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="container">
+                                                <div class="form-group">
+                                                    <label for="fullname">Fullname:</label>
+                                                    <input type="text" class="form-control" id="fullname" aria-describedby="basic-addon1">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="card_number">Card Number:</label>
+                                                    <input type="text" class="form-control" id="card_number" aria-describedby="basic-addon2">
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="expiration">Expiration(MM/YY):</label>
+                                                    <input required type="text" id="expiration" class="form-control">
+
+                                                    <label for="cv_number">CVV:</label>
+                                                    <input required type="text" id="cv_number" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" th:text="#{basket.close}"></button>
+                                            <button type="button" class="btn btn-success" th:text="#{basket.order}"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-2">
+                            <div class="row">
+                                <form method="post" th:action="@{'/basket/clean'}">
+                                    <button type="submit" class="btn btn-danger input-block-level form-control"><i class="far fa-trash-alt"></i> <span th:text="#{basket.clear}" style="font-size: 10px;"></span></button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <br/>
+    <br/>
+
+
+
+</div>
+</html>

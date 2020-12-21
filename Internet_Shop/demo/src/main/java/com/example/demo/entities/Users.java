@@ -19,11 +19,11 @@ public class Users {
         this.fullname = fullname;
     }
 
-    public Users(String email, String password, String fullname, String pictureURL) {
+    public Users(String email, String password, String fullname, String user_avatar) {
         this.email = email;
         this.password = password;
         this.fullname = fullname;
-        this.pictureURL = pictureURL;
+        this.user_avatar = user_avatar;
     }
 
     @Id
@@ -40,8 +40,8 @@ public class Users {
     @Column(name="fullname", length=500)
     private String fullname;
 
-    @Column(name="pictureURL", length=500)
-    private String pictureURL;
+    @Column(name="user_avatar", length=500)
+    private String user_avatar;
 
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Roles> roles;

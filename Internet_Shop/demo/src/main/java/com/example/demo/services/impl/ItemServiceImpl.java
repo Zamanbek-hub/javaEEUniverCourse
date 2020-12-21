@@ -2,9 +2,11 @@ package com.example.demo.services.impl;
 
 import com.example.demo.entities.Brand;
 import com.example.demo.entities.Category;
+import com.example.demo.entities.Comment;
 import com.example.demo.entities.Item;
 import com.example.demo.repositories.BrandRepository;
 import com.example.demo.repositories.CategoryRepository;
+import com.example.demo.repositories.CommentRepository;
 import com.example.demo.repositories.ItemRepository;
 import com.example.demo.services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +21,39 @@ public class ItemServiceImpl implements ItemService {
     private ItemRepository itemRepository;
 
     @Autowired
+    private CommentRepository commentRepository;
+
+    @Autowired
     private BrandRepository brandRepository;
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+
+    @Override
+    public Comment addComment(Comment comment) {
+        return commentRepository.save(comment);
+    }
+
+    @Override
+    public List<Comment> getAllCommentsByItem(Item item) {
+        return commentRepository.findAllByItemOrderByAddedDateDesc(item);
+    }
+
+    @Override
+    public Comment getComment(Long id) {
+        return commentRepository.getOne(id);
+    }
+
+    @Override
+    public Comment saveComment(Comment comment) {
+        return commentRepository.save(comment);
+    }
+
+    @Override
+    public void deleteComment(Long id) {
+        commentRepository.deleteById(id);
+    }
 
     @Override
     public Item addItem(Item item) {
@@ -32,6 +63,11 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<Item> getAllItems() {
         return itemRepository.findAll();
+    }
+
+    @Override
+    public List<Item> findItemsById(List<Long> ids) {
+        return itemRepository.findAllById(ids);
     }
 
     @Override

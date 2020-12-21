@@ -3,7 +3,12 @@ package com.example.demo.controller;
 import com.example.demo.entities.Category;
 import com.example.demo.entities.Users;
 import com.example.demo.services.UserService;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,10 +17,14 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Controller(value = "/user")
@@ -26,20 +35,14 @@ public class UsersController {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @PostMapping(value = "/user/update_picture")
-    public String update_profile(@RequestParam(name = "pictureURL", defaultValue = "https://cdn.icon-icons.com/icons2/1378/PNG/512/avatardefault_92824.png") String pictureURL){
+    @Value("${file.avatar.viewPath}")
+    private String viewPath;
 
+    @Value("${file.avatar.uploadPath}")
+    private String uploadPath;
 
-        Users user = getUserData();
-        assert user != null;
-        String old_email = user.getEmail();
-        user.setPictureURL(pictureURL);
-        if(userService.updateUserProfile(user, old_email) != null){
-            return "redirect:/profile?success";
-        }
-
-        return "redirect:/profile?error";
-    }
+    @Value("${file.avatar.defaultPicture}")
+    private String defaultPicture;
 
     @PostMapping(value = "/user/update_profile")
     public String update_profile(@RequestParam(name = "email") String email,
@@ -85,16 +88,70 @@ public class UsersController {
     }
 
 
+
+    @PostMapping(value = "/user/update_picture")
+    @PreAuthorize("isAuthenticated()")
+    public String uploadAvatar(@RequestParam(name="avatar") MultipartFile file){
+//        if(file.getContentType().equals("image/jpeg") || file.getContentType().equals("image/png")) {
+//            System.out.println("Type right");
+        try {
+            Users currentUser = getUserData();
+            String picname = DigestUtils.sha1Hex("avatar_"+currentUser.getId()+"_!Picture");
+            System.out.println("I am here");
+            byte[] bytes = file.getBytes();
+            Path path = Paths.get(uploadPath + picname+".jpg");
+            Files.write(path, bytes);
+
+            currentUser.setUser_avatar(picname);
+            userService.saveUser(currentUser);
+            return "redirect:/profile?success";
+        } catch (Exception e) {
+            e.printStackTrace();
+            }
+//        }
+//        System.out.println("Type wrong");
+
+        return "redirect:/profile?error";
+    }
+
+
+    @GetMapping(value = "/viewphoto/{url}", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
+    @PreAuthorize("isAuthenticated()")
+    public @ResponseBody byte[] viewProfilePhoto(@PathVariable(name = "url") String url) throws IOException {
+        String pictureURL = viewPath+defaultPicture;
+        if(url!=null){
+            pictureURL = viewPath+url+".jpg";
+        }
+
+        InputStream in;
+
+        try{
+            ClassPathResource resource = new ClassPathResource(pictureURL);
+            in = resource.getInputStream();
+        }
+        catch (Exception e){
+            ClassPathResource resource = new ClassPathResource(viewPath+defaultPicture);
+            in = resource.getInputStream();
+            e.printStackTrace();
+        }
+
+        return IOUtils.toByteArray(in);
+    }
+
+
     private Users getUserData(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if(!(authentication instanceof AnonymousAuthenticationToken)){
             User secUser = (User)authentication.getPrincipal();
-            Users myUser = userService.getUserByEmail(secUser.getUsername());
-            return myUser;
+            return userService.getUserByEmail(secUser.getUsername());
         }
 
         return null;
     }
+
+
+
+
 
 
 }

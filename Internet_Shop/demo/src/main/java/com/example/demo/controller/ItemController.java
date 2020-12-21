@@ -1,26 +1,49 @@
 package com.example.demo.controller;
 
-import com.example.demo.entities.Brand;
-import com.example.demo.entities.Category;
-import com.example.demo.entities.Item;
+import com.example.demo.entities.*;
 import com.example.demo.services.ItemService;
+import com.example.demo.services.PictureService;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller(value = "/admin/items")
 public class ItemController {
 
     @Autowired
     private ItemService itemService;
+
+    @Autowired
+    private PictureService pictureService;
+
+    @Value("${file.picture.viewPath}")
+    private String viewPath;
+
+    @Value("${file.picture.uploadPath}")
+    private String uploadPath;
+
 
 
     @GetMapping(value = "/admin/items")
@@ -39,6 +62,7 @@ public class ItemController {
         System.out.println("Item id = "  + item.getId());
         List<Brand> brands = itemService.getAllBrands();
         List<Category> categories = itemService.getAllCategories();
+        List<Picture> pictures = pictureService.findPicturesByItem(item);
 
         for(Category cat1: item.getCategories())
             categories.removeIf(cat2 -> cat1.getId().equals(cat2.getId()));
@@ -47,6 +71,7 @@ public class ItemController {
         model.addAttribute("item", item);
         model.addAttribute("brands", brands);
         model.addAttribute("categories", categories);
+        model.addAttribute("pictures", pictures);
         return "admin/itemDetailAdmin";
 
     }
@@ -169,4 +194,72 @@ public class ItemController {
 
         return "error";
     }
+
+    @PostMapping(value = "/admin/items/detail/remove_picture")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
+    public String removePicture(@RequestParam(name = "picture_id") Long picture_id,
+                                @RequestParam(name = "item_id") Long item_id){
+        Picture picture = pictureService.findById(picture_id);
+
+        if(picture != null){
+            pictureService.delete(picture);
+            return "redirect:/admin/items/detail/" + item_id + "?success";
+        }
+        return "redirect:/admin/items/detail/" + item_id + "?error";
+    }
+
+
+    @PostMapping(value = "/admin/items/detail/save_picture")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')")
+    public String savePicture(@RequestParam(name = "item_id") Long item_id,
+                               @RequestParam(name = "item_picture") MultipartFile file){
+        try {
+            System.out.println("START");
+            Item item = itemService.getItem(item_id);
+            System.out.println("item =" +  item);
+            if (item != null) {
+                String picname = DigestUtils.sha1Hex("item_" + file.getOriginalFilename() + "_!Picture");
+                System.out.println("I am here, item picture = " + file.getOriginalFilename());
+                byte[] bytes = file.getBytes();
+                Path path = Paths.get(uploadPath + picname + ".jpg");
+                System.out.println("path = " + path);
+                Files.write(path, bytes);
+
+                long millis = System.currentTimeMillis();
+                Date date = new java.sql.Date(millis);
+                Picture picture = new Picture(picname,date,item);
+
+                pictureService.savePicture(picture);
+                return "redirect:/admin/items/detail/" + item_id + "?success";
+            }
+
+            return "redirect:/admin/items";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/admin/items";
+        }
+
+    }
+
+
+    @GetMapping(value = "admin/items/viewphoto/{url}", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
+    public @ResponseBody
+    byte[] viewProfilePhoto(@PathVariable(name = "url") String url) throws IOException {
+        String pictureURL = viewPath+url+".jpg";
+        InputStream in;
+        System.out.println("pictureURL = " + pictureURL );
+        try{
+            ClassPathResource resource = new ClassPathResource(pictureURL);
+            in = resource.getInputStream();
+        }
+        catch (Exception e){
+            ClassPathResource resource = new ClassPathResource(pictureURL);
+            in = resource.getInputStream();
+            e.printStackTrace();
+        }
+
+        return IOUtils.toByteArray(in);
+    }
+
+
 }

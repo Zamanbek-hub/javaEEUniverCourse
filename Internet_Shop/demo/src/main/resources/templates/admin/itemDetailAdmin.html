@@ -89,6 +89,75 @@
                     </tr>
                 </tbody>
             </table>
+
+            <div class="card-body mt-5">
+                <span style="font-weight: bolder; font-size:24px;" th:text="#{pictures.all}"></span>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" th:text="#{pictures.name}"></th>
+                        <th scope="col" th:text="#{pictures.url}"></th>
+                        <th scope="col" th:text="#{pictures.added_date}"></th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr th:each="pic : ${pictures}">
+                        <td><img style="width: 50px; height: 50px;" th:src="@{'/admin/items/viewphoto/'+${pic.url}}"></td>
+                        <td th:text="${pic.url}"></td>
+                        <td th:text="${pic.addedDate}"></td>
+                        <td>
+                            <form th:action="@{'/admin/items/detail/remove_picture'}" method="POST">
+                                <input type="hidden" name="picture_id" th:value="${pic.id}">
+                                <input type="hidden" name="item_id" th:value="${item.id}">
+                                <button class="btn btn-danger btn-sm float-right" type="submit" style="width:30px;height:30px;">-</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <button class="btn btn-success btn-sm float-right" data-toggle="modal" data-target="#addItem" type="submit" style="width:30px;height:30px;">+</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+
+    <div th:id="addItem" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addItemPicture" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addItemPicture">Add Picture</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <form th:action="@{/admin/items/detail/save_picture}" method="POST" id="" class="mt-5 mb-5 was-validated" enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="container">
+                            <input type="hidden" th:value="${item.id}" name="item_id">
+                            <div class="form-group">
+                                <input type="file" class="custom-file-input" id="item_picture" name="item_picture"  accept=".png, .jpg, .jpeg" required>
+                                <label class="custom-file-label" for="item_picture" th:text="#{profile.avatar_input}"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button class="btn btn-success mt-2">Save</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 

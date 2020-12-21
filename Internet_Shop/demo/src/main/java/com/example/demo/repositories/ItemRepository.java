@@ -3,6 +3,7 @@ package com.example.demo.repositories;
 import com.example.demo.entities.Brand;
 import com.example.demo.entities.Category;
 import com.example.demo.entities.Item;
+import com.example.demo.entities.Picture;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -32,4 +33,5 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findAllByCategoriesContains(Category cat);
 
     List<Item> findAllByNameContains(String name);
+
 }

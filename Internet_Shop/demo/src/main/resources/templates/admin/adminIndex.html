@@ -3,12 +3,12 @@
     <div class="row mt-5">
         <div class="col-3">
             <ul class="list-group">
-                <li class="list-group-item active"><a href="/"><span>DashBoard</span></a></li>
-                <li class="list-group-item"><a th:href="@{/admin/items}"><span>Product Items</span></a></li>
-                <li class="list-group-item"><a th:href="@{/admin/countries}"><span>Countries</span></a></li>
-                <li class="list-group-item"><a th:href="@{/admin/brands}"><span>Brands</span></a></li>
-                <li class="list-group-item"><a th:href="@{/admin/categories}"><span>Categories</span></a></li>
-                <li class="list-group-item" sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin/users}"><span>Users</span></a></li>
+                <li class="list-group-item active"><a href="/"><span th:text="#{admin.dashboard}"></span></a></li>
+                <li class="list-group-item"><a th:href="@{/admin/items}"><span th:text="#{admin.dashboard.items}"></span></a></li>
+                <li class="list-group-item"><a th:href="@{/admin/countries}"><span th:text="#{admin.dashboard.countries}"></span></a></li>
+                <li class="list-group-item"><a th:href="@{/admin/brands}"><span th:text="#{admin.dashboard.brands}"></span></a></li>
+                <li class="list-group-item"><a th:href="@{/admin/categories}"><span th:text="#{admin.dashboard.categories}"></span></a></li>
+                <li class="list-group-item" sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/admin/users}"><span th:text="#{admin.dashboard.users}"></span></a></li>
             </ul>
         </div>
         <div class="col-9" layout:fragment = "admin_page_table">

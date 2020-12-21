@@ -3,14 +3,14 @@
 
     <div class="row mt-5">
         <div class="col-6 offset-3">
-            <img th:src="${currentUser.pictureURL}" style="width: 90%; height: 350px">
-            <form th:action="@{/user/update_picture}" method="POST" id="" class="mt-5 mb-5">
-                <input type="hidden" name="old_email" th:value="${currentUser.email}">
-                <div class="form-group">
-                    <input type="text" th:value="${currentUser.pictureURL}" name="pictureURL" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <button class="btn btn-success float-right">Update Picture</button>
+            <img th:src="@{'/viewphoto/'+${currentUser.user_avatar}}" style="width: 90%; height: 350px">
+
+            <form th:action="@{/user/update_picture}" method="POST" id="" class="mt-5 mb-5 was-validated" enctype="multipart/form-data">
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="validatedCustomFile" name="avatar"  accept=".png, .jpg, .jpeg" required>
+                    <label class="custom-file-label" for="validatedCustomFile" th:text="#{profile.avatar_input}"></label>
+<!--                    <div class="invalid-feedback">Example invalid custom file feedback</div>-->
+                    <button class="btn btn-success mt-2" th:text="#{profile.avatar_upload}"></button>
                 </div>
             </form>
 

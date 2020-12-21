@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "items")
@@ -97,9 +98,13 @@ public class Item {
     @ManyToOne(fetch = FetchType.EAGER)
     private Brand brand;
 
-
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Category> categories;
+
+//    @OneToMany(cascade=CascadeType.ALL, mappedBy="pictures")
+//    private Set<Picture> pictures;
+//    @OneToMany(mappedBy = "parent",fetch = FetchType.EAGER,cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},orphanRemoval = true)
+//    private List<Picture> pictures;
 
 
 
